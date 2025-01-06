@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Analysis</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- DaisyUI CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            /* background-color: #c4c1c1; */
+            /* background: rgb(233,233,233);
+background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
+
+
+
+background: rgb(240,241,246);
+background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
+background-image: url({{ url_for('static', filename='bg.png') }});
+background-size: cover;
+        }
+        @media screen and (max-width: 768px) {
+            body {
+                background: rgb(240,241,246);
+                background: linear-gradient(0deg, rgba(172,165,245,1) 0%, rgba(255, 255, 255,1) 100%);
+                }
+        }
+        .chatbot-container {
+            /* border: 1px solid #ddd; */
+            border-radius: 8px;
+            /* background-color: #f9f9f9; */
+            width: 100%;
+            /* max-width: 600px; */
+            max-width: 100%;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            /* height: 200px; */
+            height: 90%;
+            /* Set a fixed height for the whole chatbot container */
+        }
+
+        #chat-window {
+            /* background-color: #fff; */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+
+            height:72vh;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 10px;
+            overflow-y: auto;
+            /* Only the messages should scroll */
+            height: 100%;
+            /* Fill the available space */
+        }
+
+        .user-message,
+        .bot-message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            display: inline-block;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #e5e5e5;
+            color: black;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+            /* background-color: #f1f1f1; */
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+        }
+
+        #chat-query {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            max-height: 50px;
+            /* Fixed height for input */
+            overflow: hidden;
+            /* No scroll inside the input */
+        }
+
+        #send-button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            width: 45px;
+            height: 45px;
+        }
+
+        #send-button i {
+            font-size: 20px;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        input:focus,
+        button:focus {
+            outline: none;
+        }
+
+
+        .text-card,
+        .form-card {
+            /* margin-top: 40px; */
+            /* margin-top: 100px; */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-card {
+            background-color: #ffffff;
+            padding: 20px 60px 20px 60px;
+            /*padding: 318px 100px 318px 100px;*/
+
+            /* background-image: url({{ url_for('static', filename='bg2.jpg') }});
+            background-size: cover;
+            background-position: center; */
+        }
+        @media (max-width: 767px) {
+        .text-card {
+                    padding: 20px 20px 20px 20px; 
+                    background-position: top center; 
+                }
+            }
+
+        .form-card {
+            /* background-color: #28292b; */
+            background: rgb(7,75,168);
+	        background: linear-gradient(36deg, rgb(7, 75, 168) 0%, rgb(10, 135, 59) 100%);
+	        padding: 25px 20px 25px 20px;
+        }
+
+        .label-text {
+            color: white;
+            font-weight: 700;
+            font-size: larger;
+        }
+
+        .input,
+        .textarea,
+        .toggle {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        #form-card {
+            background-color: #e5e7eb;
+        }
+
+
+
+        
+
+    .greenglass{
+        background: rgba(104, 254, 171, 0.38);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(104, 254, 171, 0.3);
+    }
+
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Bottom Menu -->
+    <div class="col-md-12 d-md-none d-block">
+        <button class="menu__button_mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" onclick="toggleStickyMenu()">
+            <div>
+              <div><i class="fa fa-bars" aria-hidden="true"></i>
+              </div>
+            </div>Quick Menu
+        </button>
+    </div>
+
+    <!-- Desktop : side menu bar -->
+    <div id="sidebar-menu-wrapper" class="d-md-block d-none">
+        <ul class='sidebar-menu' style="list-style-type: none;">
+            <li>
+              <a class="fa fa-file-text-o fa-2x" href="/analyze_report">    
+                <span>Check Reports</span>
+              </a> 
+            </li>
+            
+            <li>
+              <a class="fa fa-life-ring" href="/">
+                <span>Make Diet Plan</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-camera" href="/image_analysis">
+                <span>Meal Analyzer</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-question" href="/howto">
+              <span>How To Use</span>
+              </a> 
+            </li>
+            
+          </ul>
+        </div>
+
+    <div class="header   d-block d-md-none">
+        <div class="inner-header flex">
+        <img src="../static/logo.png" style="width: 70px; height: auto;" alt="">
+        <h1 class="heading-mob-header">your fitness <span class='animate'>Instructor!</span></h1>
+
+        </div>
+        
+        <!--Waves Container-->
+        <div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+        </svg>
+        </div>
+        <!--Waves end-->
+        
+        </div>
+        <!--Header ends-->
+
+    <header class="p-3 text-bg-dark d-none d-md-block">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="../static/logo.png" style="width: 50px;" alt="" />
+              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{{ url_for('home') }}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a href="{{ url_for('features') }}" class="nav-link px-2 text-white">Features</a></li>
+                <li><a href="{{ url_for('pricing') }}" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="{{ url_for('faqs') }}" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="{{ url_for('contact') }}" class="nav-link px-2 text-white">Contact</a></li>
+            </ul>
+    
+            <div class="text-end">
+              <!-- <button type="button" class="btn btn-outline-light me-2">Login</button> -->
+              <button type="button" class="btn btn-warning"   onclick="window.location.href='{{url_for('howto')}}';">How to use</button>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+
+
+    <div class="container">
+
+        <div class="text-center mt-3 col-md-12       d-none d-md-block"><!--show on desktop / hide on mob-->
+            
+            <h1 class="heading">Smart Medical  <span class='animate'>Report Analyzer!</span></h1>
+        
+        </div>
+
+
+    <div class="col-md-12 px-2">
+
+        <div class="row g-3 px-2 mt-3 justify-content-center">
+            <div class="col-md-4         d-none- d-md-block-"><!-- show on desktop / hide on mob-->
+                
+                <div class="form-card image-section">
+                        <!-- Left Side: Image Upload & Result -->
+                        <div class="col-md-4-">
+                            <form id="image-upload-form" method="POST" enctype="multipart/form-data">
+                                <div class=" row mb-3">
+                                    <!-- <label for="report-image-input" class="form-label">Upload an Image of Your Report</label> -->
+                                    <!-- <input type="file" class="form-control" name="report_image" id="report-image-input"> -->
+                                    <h4 class="display-6 text-white fs-4 mb-2">Submit Your Report</h4>
+                                    <div class="col-6 text-center">
+                                        <button type="button" class="btn btn-primary- uploadfilebtn  form-control- mt-2 px-2">
+                                            <span><i class="fa fa-camera"></i>&nbsp;Upload File</span>
+                                            <input type="file" class="form-control" name="report_image" id="report-image-input" style="opacity: 0; position: absolute; margin-top:-28px; width:120px">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-light  form-control- mt-2 px-2">
+                                            <span><i class="fa fa-camera"></i>&nbsp;Take Picture</span>
+                                            <input type="file" class="form-control" accept="image/*" id="report-camera-capture" name="report_image_camera" capture="camera" style="opacity: 0; position: absolute; margin-top:-28px; width:120px">
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <div id="image-preview" class="mb-3" style="text-align: center; display: none;">
+                                    <img src="" alt="Image Preview" style="max-width: 100%; height: auto; width: 250px; border-radius: 8px;"/>
+                                </div>
+                                <div class="text-center  gap-2" id="analyzerimgBtn" style="display: none;">
+                                    <button type="button" id="reset-button" class="btn btn-light">Reset</button>
+                                    <button type="submit" class="btn btn-dark" id="checkreportbtn">Check Report</button>
+                                </div>
+                            </form>
+
+                            <!-- Result Section -->
+                            <div id="image-result-section" class="mt-4" style="display: none;">
+                                <h3 class="text-center">Analysis Result</h3>
+                                <p class="text-center" id="image-result"></p>
+                            </div>
+                            <div id="image-analyzed-message" class="mt-4 alert alert-info" style="display: none;">
+                                <p class="text-center">Image has been successfully analyzed.</p>
+                            </div>
+                        </div>
+
+                </div>
+
+
+            
+              </div>
+
+            <div class="col-md-8 ">
+
+                <!-- for desktop -->
+                <div class="text-card diet_plan_space- d-block- d-md-none-" id="rightReportArea">
+                    <!-- <h2 class="text-center mb-3" style="font-size: 20px; font-weight: 500;">AI Powered Meal Planner</h2> -->
+                    <div class="mx-auto p-2" style="width: 200px;">
+                        <img class="img-fluid- img-thumbnail mx-auto- d-block" src="../static/med-report.jpg" alt="">
+                    </div>
+                    <p class="text-center">Easily understand your medical test reports with our AI-driven Medical Report Analyzer. Simply upload your report, and our system will provide clear insights and guidance about your health.</p>
+                        
+                </div>
+                
+                <div class="col-md-6-">
+                        <!-- Right Side: Chatbot -->
+                        <div class="col-md-12 reportChatbot">
+                            <!-- Chatbot -->
+                            <div class="chatbot-container  glassbg mt-0" id="chatbot-container">
+                                <div id="chat-window" class="chat-window">
+                                    <div id="chat-messages">
+                                        <div class="bot-message">You can ask me anything about your report. Let's discuss it!</div>
+                                    </div>
+                                    <div class="chat-input">
+                                        <div class="input-group">
+                                            <input type="text" id="chat-query" placeholder="Type your question..." class="form-control" aria-label="Chat query">
+                                            <button id="send-button" class="btn btn-primary btn-sm" type="button" >
+                                                <i class="fas fa-paper-plane"></i> <!-- Icon for send button -->
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+            </div>
+
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <!-- Mobile : sticky menu bg  gradient -->
+    <div class="stickybottom-menu-bg  h-25   d-md-none d-block" id="stickyMenuBg">
+        <div class="mobile-bottom-menu-bg"></div>
+      </div>
+
+      <!-- Footer : Desktop -->
+    <footer class="bg-dark- text-white mt-5 pt-4 pb-2 col-md-12 d-md-block d-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div class="col-md-4">
+              <h5>Quick Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Home</a></li>
+                <li><a href="#" class="text-white">About Us</a></li>
+                <li><a href="#" class="text-white">Services</a></li>
+                <li><a href="#" class="text-white">Contact</a></li>
+              </ul>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer : Mobile -->
+      <div class="bg-secondary-subtle text-white- mt-5 pt-4 pb-2 col-md-12 d-block d-md-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-black me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mx-auto p-5" style="width: 200px;"></div>
+          
+      </div>
+
+
+
+
+        <!-- Mobile: offcanvas menu -->
+        
+        <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+        <div class="offcanvas-header d-none">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small--" style="padding: 0;">
+            <section class="menu__body_mobile">
+                <div class="menu__header_mobile">
+                  <label> 
+                    <div></div>
+                  </label>
+                  <p>Quick Navigation</p>
+                  <button title="Close" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"  onclick="closeMobileStickyBg()">
+                    <div></div>
+                  </button>
+                </div>
+                <div class="menu__links_mobile"><a href="/">Home</a><a href="/features">Features</a><a href="/pricing">Pricing</a><a href="/faqs">Faqs</a><a href="/contact">Contact</a></div>
+                <div class="menu__contact_mobile">
+                    <a href="/"> 
+                        <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                    </svg> -->
+                    <span>Make diet plan</span></a>
+                    <a href="/image_analysis/">
+                        <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Meal Analyser</span></a>
+                    <a href="/analyze_report"> 
+                        <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Medical Report</span></a></div>
+              </section>
+        </div>
+        </div>
+
+
+   
+
+
+    <!-- Bootstrap and Tailwind JS (for form styling if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+    <script>
+
+let imagesection = document.getElementsByClassName("image-section");
+let checkreportbtn = document.getElementById("checkreportbtn")
+document.getElementById('image-upload-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+            // const formData = new FormData(event.target);
+
+
+            imagesection[0].style.opacity = 0.5;
+            checkreportbtn.disabled = true;
+            const fileInput = document.getElementById('report-image-input');
+            const fileInputCamera = document.getElementById('report-camera-capture');
+
+            const formData = new FormData();
+            if (fileInput.files.length > 0) {
+                formData.append('report_image', fileInput.files[0]);
+            } else if (fileInputCamera.files.length > 0) {
+                formData.append('report_image', fileInputCamera.files[0]);
+            } else {
+                alert('Please upload or capture an image.');
+                return;
+            }
+            //
+
+            try {
+                const response = await fetch('/analyze_report', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                
+                document.querySelector("#rightReportArea").style.display = 'none';
+                document.querySelector(".reportChatbot").style.display = 'block';
+                if (data.result) {
+                    // Display the analysis result
+                    imagesection[0].style.opacity = 1;
+                    checkreportbtn.disabled = false;
+
+                    const resultSection = document.getElementById('image-result-section');
+                    const analyzedMessage = document.getElementById('image-analyzed-message');
+                    resultSection.style.display = 'none';  // Hide the analysis result
+                    analyzedMessage.style.display = 'block';  // Show the analyzed message
+                } else if (data.error) {
+                    // Display error if received from server
+                    alert(`Error: ${data.error}`);
+                } else {
+                    alert('Unexpected error: No result found.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while analyzing the report. Please try again.');
+            }
+        });
+
+        // chatbot interaction
+        document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector(".reportChatbot").style.display = 'none';
+
+    const sendButton = document.getElementById('send-button');
+    const chatQuery = document.getElementById('chat-query');
+    const chatMessages = document.getElementById('chat-messages');
+
+    if (sendButton && chatQuery && chatMessages) {
+        // Function to send the message
+        const sendMessage = async () => {
+            const query = chatQuery.value.trim();
+            if (!query) return;
+
+            // Append user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            userMessage.textContent = query;
+            chatMessages.appendChild(userMessage);
+
+            // Clear input
+            chatQuery.value = '';
+
+            // Send query to the server
+            try {
+                const response = await fetch('/medical-report-bot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const data = await response.json();
+
+                // Check if the response contains an error or response text
+                if (data.error) {
+                    // Append error message from the server
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'bot-message';
+                    botMessage.textContent = data.error;
+                    chatMessages.appendChild(botMessage);
+                } else {
+                    // Append bot message
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'bot-message';
+                    botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
+                    chatMessages.appendChild(botMessage);
+                }
+
+                // Scroll to the latest message
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        // Trigger message send on button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Trigger message send on pressing the Enter key
+        chatQuery.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();  // Prevent the default action (e.g., submitting a form)
+                sendMessage();  // Send the message
+            }
+        });
+    }
+});
+
+
+
+            // Image preview 
+        document.addEventListener('DOMContentLoaded', () => { 
+            const fileInput = document.getElementById('report-image-input');
+            const fileInputCamera = document.getElementById('report-camera-capture');
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = previewContainer.querySelector('img');
+            const resetButton = document.getElementById('reset-button');
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    fileInputCamera.disabled = true;
+                    const file = fileInput.files[0];
+                    displayImagePreview(file);
+                } else {
+                    fileInputCamera.disabled = false;
+                    clearImagePreview();
+                }
+                // const file = fileInput.files[0];
+                // if (file) {
+                //     const reader = new FileReader();
+
+                //     reader.onload = (e) => {
+                //         previewImage.src = e.target.result;
+                //         previewContainer.style.display = 'block'; // Show the preview container
+                //     };
+
+                //     reader.readAsDataURL(file); // Read the file as a Data URL
+                // } else {
+                //     previewImage.src = '';
+                //     previewContainer.style.display = 'none'; // Hide the preview container if no file selected
+                // }
+            });
+
+            fileInputCamera.addEventListener('change', () => {
+                if (fileInputCamera.files.length > 0) {
+                    fileInput.disabled = true;
+                    const file = fileInputCamera.files[0];
+                    displayImagePreview(file);
+                } else {
+                    fileInput.disabled = false;
+                    clearImagePreview();
+                }
+                // const fileCamera = fileInputCamera.files[0];
+                // if (fileCamera) {
+                //     const reader = new FileReader();
+
+                //     reader.onload = (e) => {
+                //         previewImage.src = e.target.result;
+                //         previewContainer.style.display = 'block'; // Show the preview container
+                //     };
+
+                //     reader.readAsDataURL(fileCamera); // Read the file as a Data URL
+                // } else {
+                //     previewImage.src = '';
+                //     previewContainer.style.display = 'none'; // Hide the preview container if no file selected
+                // }
+            });
+
+            function displayImagePreview(file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImage.src = e.target.result;
+                        previewContainer.style.display = 'block'; 
+                    };
+                    reader.readAsDataURL(file); // Read the file as a Data URL
+                document.getElementById('analyzerimgBtn').style.display = 'block';
+                resetButton.style.display = 'block';
+
+
+                }
+
+                function clearImagePreview() {
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none'; 
+                }
+
+                resetButton.addEventListener('click', () => {
+                    fileInput.value = '';
+                    fileInputCamera.value = '';
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none'; 
+                document.getElementById('analyzerimgBtn').style.display = 'none'; 
+                resetButton.style.display = 'none';
+
+                });
+        });
+        // image preview container FOR camera image
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInputCamera = document.getElementById('camera-capture');
+            const previewContainerCamera = document.getElementById('image-preview-camera-capture');
+            const previewImageC = previewContainerCamera.querySelector('img');
+
+            fileInputCamera.addEventListener('change', () => {
+                const file = fileInputCamera.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        previewImageC.src = e.target.result;
+                        previewContainerCamera.style.display = 'block'; // Show the preview container
+                    };
+
+                    reader.readAsDataURL(file); // Read the file as a Data URL
+                } else {
+                    previewImageC.src = '';
+                    previewContainerCamera.style.display = 'none'; // Hide the preview container if no file selected
+                }
+            });
+        });
+
+
+
+        // Mobile : mobile quick menu bg
+        function toggleStickyMenu() {
+            const stickyMenu = document.getElementById('stickyMenuBg');
+            if (stickyMenu.classList.contains('h-25')) {
+                stickyMenu.classList.remove('h-25');
+                stickyMenu.classList.add('h-75');
+            } else {
+                stickyMenu.classList.remove('h-75');
+                stickyMenu.classList.add('h-25');
+            }
+        }
+        
+        function closeMobileStickyBg() {
+            const stickyMenu = document.getElementById('stickyMenuBg');
+            stickyMenu.classList.remove('h-75');
+            stickyMenu.classList.add('h-25');
+        }
+
+
+
+const offcanvasCloseBtn = document.querySelector('#offcanvas-videos .btn-close');
+if (offcanvasCloseBtn) {
+    offcanvasCloseBtn.addEventListener('click', function() {
+        isOffcanvasShown = false; // Reset the flag when the offcanvas is closed
+    });
+}
+
+
+    </script>
+
+</body>
+
+</html>

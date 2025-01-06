@@ -1,0 +1,31 @@
+
+app.py
+flask  > import  url_for  
+
+-----------form area
+2 fields in one row, remove (form-group mb-3) with col-md-6
+replace the css class .labe-text  with BootStrap .form-label
+
+user detail added
+user detail in seperate section when clicked then form will visible
+----------------------------
+
+------ vide0 list
+
+----------------------------
+
+------ Image area
+loading added > 
+1-change the layout of image area 
+2- modified related jquery code
+----------------------------
+
+------ Image chat
+
+Image response : 
+--change the id to class for show the resp in multiple places
+--document.getElementById('image-result-section').innerHTML = `<p>${data.result}</p>`;
+
+
+
+----------------------------

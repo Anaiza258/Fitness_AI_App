@@ -1,0 +1,86 @@
+# AI-Powered Meal Planner
+The  **AI-Powered Meal Planner** is a personalized diet plan generator designed to help users improve their health by offering tailored meal plans based on their unique health conditions. This app was created with a mission to encourage individuals to take better care of their diet and overall well-being. 
+## App Features Overview
+<img width="818" alt="image" src="https://github.com/user-attachments/assets/a3e32b32-1fd0-4c7f-8a7f-2fcfc951d0b9" />
+
+* ### Medical Report Analysis
+The app provides a space for users to discuss their medical reports.It analyzes the information to offer insights that can guide users in understanding their health better.
+* ### Personalized Diet Plan Generation
+The app creates customized diet plans tailored to the user’s specific health conditions. Whether it’s managing weight, controlling blood sugar, or maintaining overall fitness, the app offers plans that align with the user's unique health needs.
+* ### Meal Analysis for Health
+Users can input details about their meals, and the app evaluates whether the food is suitable for their health condition. This helps users make informed decisions about their diet and choose healthier options.
+
+## App Usage Flow
+### Feature Walkthrough
+**Personalized Diet Plan Generation** 
+* **Fill out the provided form** with your health details to receive a personalized diet plan tailored to your specific needs.
+* **Receive exercise video recommendations** aligned with your diet plan to support a healthier lifestyle.
+* **Upload an image** of your meal to analyze whether it aligns with your health condition. The app provides insights into whether the food is healthy for you.
+* **Use the chatbot** for personalized discussions about your diet plan or meal images. This interactive feature ensures users can get detailed, tailored guidance.
+
+**Medical Report Analysis**
+* Users can upload an image of their medical report directly in the app.
+* The app provides a dedicated chatbot designed to analyze and discuss the report with the user.
+* **Through the chatbot**, users receive personalized guidance related to their medical report, ensuring clarity and actionable insights.
+
+**Meal Analyzer**
+* Users can upload an image of their meal along with filling out a form to provide details about their health condition.
+* The app analyzes the meal based on the provided health information and offers insights on whether the meal is suitable for the user’s health.
+* **Exercise Recommendations:** Personalized exercise videos are suggested to complement the meal analysis and support the user’s health goals.
+* **Interactive Chatbot:** A chatbot is available for further discussion about the meal analysis or recommended diet plans, offering a personalized and interactive experience.
+
+***
+## Developer’s Guide: Workflow Overview
+
+### Diet Plan Generation
+* User submits health details.
+* Backend calls the LLM for processing.
+* Personalized diet plan is generated and sent to the frontend.
+* Once the diet plan is generated, users can access three key features:
+> Image analyzer: The frontend sends the uploaded image to the backend using an AJAX request, where the backend processes the image using the LLM and returns the analysis result.        
+> Exercise videos Recommendations: The backend generates personalized exercise video recommendations based on user details and analysis results, sending them back to the frontend for display.   
+> Chatbot for discussion: The backend powers the chatbot, processing user queries and providing personalized responses by interacting with the LLM.
+
+### Meal Analysis
+* User uploads a meal image and provides details.
+* LLM analyzes the image and details.
+* Result and recommendations are sent back to the user.
+
+### Report Analysis
+* User uploads a medical report.
+* LLM extracts insights and analyzes the data.
+* A chatbot enables interactive discussions about the report.
+
+
+## Tech Stack 
+### 1. Front-End
+
+* **Frameworks:** Bootstrap 
+* **styling:** CSS, Bootstrap
+* **APIs:** Fetch or AJAX for API calls
+* **Programming Language:** Javascript
+
+### 2. Back-End
+* **Framework:** Flask 
+* **Programming Language:** Python
+
+### LLM (Large Language Model)
+> Google Gemini Model(gemini-1.5-flash) via API KEY 
+
+## Data Flow
+
+**Diet Plan Generation:**
+
+User submits health details → Backend calls LLM → Personalized diet plan generated → Sent to frontend.
+
+**Meal Analysis:**
+
+User add details and  uploads meal image → LLM analyzes → Result sent back → Exercise videos recommended → Chatbot available for further discussion.
+
+**Report Analysis:**
+
+User uploads medical report → LLM extracts insights → Chatbot opens for detailed discussions.
+
+
+
+

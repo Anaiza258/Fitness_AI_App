@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Diet Plan</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- DaisyUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            /* background-color: #c4c1c1; */
+            /* background: rgb(233,233,233);
+background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
+
+
+
+background: rgb(240,241,246);
+background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
+background-image: url({{ url_for('static', filename='bg.png') }});
+background-size: cover;
+        }
+        @media screen and (max-width: 768px) {
+            body {
+                background: rgb(240,241,246);
+                background: linear-gradient(0deg, rgba(172,165,245,1) 0%, rgba(255, 255, 255,1) 100%);
+                }
+        }
+        .chatbot-container {
+            /* border: 1px solid #ddd; */
+            border-radius: 8px;
+            /* background-color: #f9f9f9; */
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 200px;
+            /* Set a fixed height for the whole chatbot container */
+        }
+
+        #chat-window {
+            /* background-color: #fff; */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+
+            height:72vh;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 10px;
+            overflow-y: auto;
+            /* Only the messages should scroll */
+            height: 100%;
+            /* Fill the available space */
+        }
+
+        .user-message,
+        .bot-message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            display: inline-block;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #e5e5e5;
+            color: black;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+            /* background-color: #f1f1f1; */
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+        }
+
+        #chat-query {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            max-height: 50px;
+            /* Fixed height for input */
+            overflow: hidden;
+            /* No scroll inside the input */
+        }
+
+        #send-button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            width: 45px;
+            height: 45px;
+        }
+
+        #send-button i {
+            font-size: 20px;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        input:focus,
+        button:focus {
+            outline: none;
+        }
+
+
+        .text-card,
+        .form-card {
+            margin-top: 40px;
+            /* margin-top: 100px; */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-card {
+            background-color: #ffffff;
+            padding: 318px 100px 192px 100px;
+            /*padding: 318px 100px 318px 100px;*/
+
+            background-image: url({{ url_for('static', filename='bg2.jpg') }});
+            background-size: cover;
+            background-position: center;
+        }
+        @media (max-width: 767px) {
+        .text-card {
+                    padding: 100px 20px 20px 20px; 
+                    background-position: top center; 
+                }
+            }
+
+        .form-card {
+            /* background-color: #28292b; */
+            background: rgb(7,75,168);
+background: linear-gradient(36deg, rgba(7,75,168,1) 0%, rgba(10,13,14,1) 100%);
+            padding: 25px 20px 25px 20px;
+        }
+
+        .label-text {
+            color: white;
+            font-weight: 700;
+            font-size: larger;
+        }
+
+        .input,
+        .textarea,
+        .toggle {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        #form-card {
+            background-color: #e5e7eb;
+        }
+
+        /* Custom Checkbox */
+        .custom-checkbox {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 16px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-checkbox .checkmark {
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .custom-checkbox .checkmark::before {
+            content: "\2713";
+            font-size: 16px;
+            color: transparent;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark {
+            background-color: #333;
+            border-color: #333;
+            transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark::before {
+            color: #fff;
+        }
+
+        .custom-checkbox:hover {
+            color: #666;
+        }
+
+        .custom-checkbox:hover .checkmark {
+            border-color: #f1e4e4;
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .custom-checkbox input[type="checkbox"]:focus+.checkmark {
+            box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+            outline: none;
+        }
+
+
+
+
+        /* updated: for hide the div*/
+        .diet_plan_space {
+            display: block;
+        }
+        .response {
+            display: none;
+        }
+        .response.show {
+            display: block;
+        }
+        .video-item {
+        position: relative;
+        overflow: hidden;
+        /* height: 0; */
+        }
+        .video-item iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* aspect-ratio: 16 / 9; */
+        }
+        .form-label{
+            color: #ddd;
+        }
+
+        .diet-resp-section{
+            background: rgb(7,75,168);
+            background: linear-gradient(36deg, rgb(223, 223, 223) 0%, rgb(156, 156, 156) 100%);
+            padding: 25px 20px 25px 20px;
+
+            /* margin-top: 100px; */
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .diet-resp-section .label-text{
+            color: #082d5e;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .image-section {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(49, 55, 82, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+            padding: 25px 20px 25px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* .offcanvas {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(213, 213, 213, 0.45);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+        }
+
+    @media screen and (max-width: 768px) {
+        .offcanvas {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(213, 213, 213, 0.45);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            }
+      } */
+
+
+
+
+    .greenglass{
+        background: rgba(104, 254, 171, 0.38);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(104, 254, 171, 0.3);
+    }
+
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Bottom Menu -->
+    <div class="col-md-12 d-md-none d-block">
+        <button class="menu__button_mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" onclick="toggleStickyMenu()">
+            <div>
+              <div><i class="fa fa-bars" aria-hidden="true"></i>
+              </div>
+            </div>Quick Menu
+        </button>
+    </div>
+
+    <!-- Desktop : side menu bar -->
+    <div id="sidebar-menu-wrapper" class="d-md-block d-none">
+        <ul class='sidebar-menu' style="list-style-type: none;">
+            <li>
+              <a class="fa fa-file-text-o fa-2x" href="/analyze_report">    
+                <span>Check Reports</span>
+              </a> 
+            </li>
+            
+            <li>
+              <a class="fa fa-life-ring" href="/">
+                <span>Make Diet Plan</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-camera" href="/image_analysis">
+                <span>Meal Analyzer</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-question" href="/howto">
+              <span>How To Use</span>
+              </a> 
+            </li>
+            
+          </ul>
+        </div>
+
+    <div class="header   d-block d-md-none">
+        <div class="inner-header flex">
+        <img src="../static/logo.png" style="width: 70px; height: auto;" alt="">
+        <h1 class="heading-mob-header">your fitness <span class='animate'>Instructor!</span></h1>
+
+        </div>
+        
+        <!--Waves Container-->
+        <div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+        </svg>
+        </div>
+        <!--Waves end-->
+        
+        </div>
+        <!--Header ends-->
+
+    <header class="p-3 text-bg-dark d-none d-md-block">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="../static/logo.png" style="width: 50px;" alt="" />
+              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+              <li><a href="{{ url_for('features') }}" class="nav-link px-2 text-white">Features</a></li>
+              <li><a href="{{ url_for('pricing') }}" class="nav-link px-2 text-white">Pricing</a></li>
+              <li><a href="{{ url_for('faqs') }}" class="nav-link px-2 text-white">FAQs</a></li>
+              <li><a href="{{ url_for('contact') }}" class="nav-link px-2 text-white">Contact</a></li>
+
+            </ul>
+    
+            <div class="text-end">
+              <!-- <button type="button" class="btn btn-outline-light me-2">Login</button> -->
+              <button type="button" class="btn btn-warning"   onclick="window.location.href='{{url_for('howto')}}';">How to use</button>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+
+
+    <div class="container">
+
+        <div class="text-center mt-3 col-md-12       d-none d-md-block"><!--show on desktop / hide on mob-->
+            
+            <h1 class="heading">your fitness <span class='animate'>Instructor!</span></h1>
+        
+        </div>
+
+
+    <div>
+<!-- 3 main features -->
+<section class="bg-light- py-2 mt-2 py-md-5 py-xl-8">
+
+  
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="container-fluid">
+            <div class="row gy-3 gy-md-4">
+                
+                <div class="col-12 col-lg-4">
+                    <a href="/analyze_report">
+                    <div class="card border-dark- report-card">
+                      <div class="card-body p-3 p-md-4 p-xxl-5 d-flex justify-content-center align-items-center">
+                        <div class="d-flex align-items-center">
+                          <div class="me-3 text-primary- text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-custom-icon" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M18 14a1 1 0 1 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2v-2Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M15.026 21.534A9.994 9.994 0 0 1 12 22C6.477 22 2 17.523 2 12S6.477 2 12 2c2.51 0 4.802.924 6.558 2.45l-7.635 7.636L7.707 8.87a1 1 0 0 0-1.414 1.414l3.923 3.923a1 1 0 0 0 1.414 0l8.3-8.3A9.956 9.956 0 0 1 22 12a9.994 9.994 0 0 1-.466 3.026A2.49 2.49 0 0 0 20 14.5h-.5V14a2.5 2.5 0 0 0-5 0v.5H14a2.5 2.5 0 0 0 0 5h.5v.5c0 .578.196 1.11.526 1.534Z" clip-rule="evenodd"/>
+                              </svg>
+                          </div>
+                          <div class="text-left">
+                            <h4 class="mb-1 text-white"><strong>Check Reports</strong></h4>
+                            <p class="m-0 text-secondary- text-white">Analyse Medical Reports</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div></a>
+                  </div>
+                  
+                  
+                  
+                  <div class="col-12 col-lg-4">
+                    <a href="/">
+                    <div class="card border-dark- diet-card">
+                      <div class="card-body p-3 p-md-4 p-xxl-5 d-flex justify-content-center align-items-center">
+                        <div class="d-flex align-items-center">
+                          <div class="me-3 text-white">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  class="bi bi-custom-icon" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                              </svg>
+                              
+                          </div>
+                          <div class="text-left">
+                            <h4 class="mb-1 text-white"><strong>Diet Plan</strong></h4>
+                            <p class="m-0 text-white">Make Healthy Lifestyle</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div></a>
+                  </div>
+                  
+                  <div class="col-12 col-lg-4 ">
+                    <a href="/image_analysis">
+                    <div class="card border-dark- meal-card">
+                      <div class="card-body p-3 p-md-4 p-xxl-5 d-flex justify-content-center align-items-center">
+                        <div class="d-flex align-items-center">
+                          <div class="me-3 text-primary- text-white">
+                            <svg  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="bi bi-custom-icon" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M7.5 4.586A2 2 0 0 1 8.914 4h6.172a2 2 0 0 1 1.414.586L17.914 6H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1.086L7.5 4.586ZM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" clip-rule="evenodd"/>
+                              </svg>
+                              
+                          </div>
+                          <div class="text-left">
+                            <h4 class="mb-1 text-white"><strong>Meal Analyzer</strong></h4>
+                            <p class="m-0 text-secondary- text-white">Scan Your Meal </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div></a>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+
+    <div class="container      d-block d-md-none"><!--hide on desktop / show on mob-->
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <!-- for mobile -->
+                <div class="text-card diet_plan_space {% if form_submitted %}hidden{% endif %}" id="diet-plan-section">
+                    <h2 class="text-center mb-3" style="font-size: 20px; font-weight: 500;">AI Powered Meal Planner</h2>
+                    <p class="text-center">Plan your meals with our AI-powered meal planner. This tool generates a
+                        customized diet plan based on your health condition.</p>
+                </div>
+            </div>
+            <div class="form-card">
+                <a href="#" class="btn btn-outline btn-info btn-sm  mb-3 hidden" id="showmydetails">SHOW MY DETAILS</a>
+                {% if form_submitted %}
+                <div class="space-y-3  form-details" id="form-details">
+                    <h4 class="text-white">Your submitted information</h4>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Age: {{ user_details.age }}</small>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Height: {{ user_details.height }} cm</small>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Weight: {{ user_details.weight }} kg</small>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">BMI: {{ user_details.bmi }}</small>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Diabetes: {% if user_details.diabetes %}Yes{% else %}No{% endif %}</small>
+                    <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Other Conditions: {% if user_details.other_conditions %}{{ user_details.other_conditions }}{% else %}No additional conditions provided{% endif %}</small>
+                    <div class="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+                        <span style="padding-bottom: 15px;">Want to make another plan?</span>  
+                        <button type="button" class="btn btn-primary showform" id="addremoveForm">Add Details Again</button>
+                    </div>
+                </div>
+                
+                {% endif %} 
+                <form action="/" method="POST" class="space-y-3   {% if form_submitted %}hidden{% endif %}" id="detailForm">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-6">
+                            <label class="form-label" for="age">Your Age?</label>
+                            <input type="text" name="age" class="input input-bordered w-100" placeholder="e.g. 30"
+                                required>
+                        </div>
+                        <div class="col-md-6 col-6">
+                            <label class="form-label" for="height"> Height (cm)?</label>
+                            <input type="number" id="height-mobile" name="height" class="input input-bordered w-100"
+                                placeholder="e.g. 170" required>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6 col-6">
+                            <label class="form-label" for="weight"> Weight (kg)?</label>
+                            <input type="number" id="weight-mobile" name="weight" class="input input-bordered w-100"
+                                placeholder="e.g. 70" required>
+                        </div>
+                        <div class="col-md-6 col-6">
+                            <label class="form-label mobileViewHide- d-none d-md-block" for="bmi">Your calculated BMI:</label>
+                            <label class="form-label mobileViewShow- d-block d-md-none" for="bmi">Your BMI:</label>
+                            <input type="text" id="bmi-mobile" class="input input-bordered w-100" readonly placeholder="Calculated BMI">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="days">Plan for Duration (days)</label>
+                        <input type="number" name="days" class="input input-bordered w-100" placeholder="e.g. 30"
+                            required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="custom-checkbox">
+                            <input name="diabetes" type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="form-label">Do you have diabetes?</label>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="other_conditions">Other Health Conditions</label>
+                        <textarea name="other_conditions" class="textarea textarea-bordered w-100" rows="3"
+                            placeholder="List any other health conditions..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" id="diet-plan-form" class="btn btn-primary">Get Diet Plan</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+          </div>
+    </div>
+    <div class="container">
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 ">
+                <!-- for desktop -->
+                <div class="text-card diet_plan_space- {% if form_submitted %}d-none{% endif %} d-block d-md-none-" id="diet-plan-section">
+                    <h2 class="text-center mb-3" style="font-size: 20px; font-weight: 500;">AI Powered Meal Planner</h2>
+                    <p class="text-center">Plan your meals with our AI-powered meal planner. This tool generates a
+                        customized diet plan based on your health condition.</p>
+                </div>
+                <!-- diet plan and videos link-->
+                <div class="col-md-6-">
+                    <div class="response {% if form_submitted %}show{% endif %}"></div>
+                    {% if diet_plan %}
+                    <div class="form-card diet-resp-section">
+                        <label class="label-text" for="diet_plan">Your Personalized Diet Plan</label>
+                        <textarea id="diet_plan" class="textarea textarea-bordered w-100" rows="10"
+                            readonly>{{ diet_plan | safe }}</textarea>
+                    </div>
+
+                    <!-- New section for Image Upload -->
+                    {% if form_submitted %}  <!-- for just mobile camera capture-->
+                    <div class="row justify-content-center- d-block d-md-none">
+                        <div class="col-md-4-">
+                            <div class="form-card- mt-5  image-section">
+                                <h3 class="text-center mb-3 text-white" style="font-size: 18px; font-weight: 500;">Check if your food is healthy</h3>
+                                <form id="image-upload-form2" method="POST" enctype="multipart/form-data" class="space-y-3">
+                                    <div class="mb-3">
+
+                                
+                                            <!-- <label for="formFile" class="form-label">Upload an image of your food</label>
+                                            <input class="form-control" type="file" name="food_image" id="food-image-input" required> -->
+
+                                            <label for="camera-capture" class="form-label mt-3">Capture an image with your camera</label>
+                                            <input class="form-control" type="file" accept="image/*" id="camera-capture" name="food_image" capture="camera" required>
+
+                                        <!-- <label class="label-text" for="food_image">Upload an Image of Your Food</label>
+                                        <input type="file" name="food_image" id="food-image-input" class="input input-bordered w-100" required> -->
+                                    </div>
+                                    <!-- Image Preview -->
+                                    <div id="image-preview-camera-capture" class="mb-3" style="text-align: center; display: none;">
+                                        <img src="" alt="Image Preview" style="max-width: 100%; height: auto; width: 250px; border-radius: 8px;"/>
+                                        <div class="col mt-3 px-1 text-white" id="image-result-section-camera"></div>
+                                        <!-- <div class="col mt-3 px-1 text-white" id="image-result-section"></div> -->
+                                        <button class="btn btn-block  btn-success mt-2" type="button" id="openOffcanvasBtnMobile" style="display: none;">
+                                            Start chat for diet & Image Analysis
+                                        </button>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Analyze Image</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        
+                            
+                        </div>
+                        <!-- <div class="col-md-6">
+                        
+                            <div class="chatbot-container mt-5" style="display: none;">
+                                <div id="chat-window" class="chat-window">
+                                    <div id="chat-messages" class="chat-messages">
+                                        <div class="bot-message">Hi! Ask me anything about your diet or this food analysis.
+                                        </div>
+                                    </div>
+                                    <div class="chat-input mt-3">
+                                        <div class="input-group">
+                                        
+                                            <input type="text" id="chat-query" placeholder="Type your question..."
+                                                class="form-control" aria-label="Chat query">
+                                            
+                                            <button id="send-button" class="btn btn-primary btn-sm" type="button">
+                                                <i class="fas fa-paper-plane"></i> 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> -->
+
+                    </div>
+                    {% endif %} 
+                    <!--   -->
+    <div style="height:400px" class="d-none d-md-none"></div>
+    <div id="triggerDiv" class="d-none d-md-none"></div>
+
+                    <!-- Display video previews below the diet plan -->
+                    <div class="video-preview col-md-12 mt-3">
+                        <large class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Recommended Exercise Videos</large>
+
+
+                        <label class="text-black d-none" for="exercise_videos">Recommended Exercise Videos</label>
+                        <div class="video-list mt-2">
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                {% for video in exercise_videos %}
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-body" style="padding: 15px;">
+                                        <h5 class="card-title d-none">{{ video.title }}</h5>
+                                        <p class="card-text d-none-">{{ video.title }}</p>
+                                        </div>
+                                        <p style="position: relative; width: 100%; height: 100%;">
+                                        <iframe width=100% height=100%
+                                            src="https://www.youtube.com/embed/{{ video.url.split('v=')[-1] }}"
+                                            title="{{ video.title }}" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen></iframe></p>
+                                    </div>
+                                </div>
+
+
+                                <!-- <div class="video-item ">
+                                    <p style="font-size: 20px;">{{ video.title }}</p>
+                                    <iframe width="560" height="315"
+                                        src="https://www.youtube.com/embed/{{ video.url.split('v=')[-1] }}"
+                                        title="{{ video.title }}" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen></iframe>
+                                </div>
+                                <hr> -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="col-md-4         d-none d-md-block"><!-- show on desktop / hide on mob-->
+                
+                <div class="form-card">
+                    <a href="#" class="btn btn-outline btn-info btn-sm  mb-3 hidden" id="showmydetails2">SHOW MY DETAILS</a>
+                    {% if form_submitted %}
+                    <div class="space-y-3  form-details" id="form-details2">
+                        <h4 class="text-white">Your submitted information</h4>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Age: {{ user_details.age }}</small>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Height: {{ user_details.height }} cm</small>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Weight: {{ user_details.weight }} kg</small>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">BMI: {{ user_details.bmi }}</small>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Diabetes: {% if user_details.diabetes %}Yes{% else %}No{% endif %}</small>
+                        <small class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Other Conditions: {% if user_details.other_conditions %}{{ user_details.other_conditions }}{% else %}No additional conditions provided{% endif %}</small>
+                        <div class="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+                            <span style="padding-bottom: 15px;">Want to make another plan?</span>  
+                            <button type="button" class="btn btn-primary showform" id="addremoveForm2">Add Details Again</button>
+                        </div>
+                    </div>
+                    {% endif %}
+                     
+                    <form action="/" method="POST" class="space-y-3   {% if form_submitted %}hidden{% endif %}" id="detailForm2">
+                        <div class="row g-3">
+                            <div class="col-md-6 col-6">
+                                <label class="form-label" for="age">Your Age?</label>
+                                <input type="text" name="age" class="input input-bordered w-100" placeholder="e.g. 30"
+                                    required>
+                            </div>
+                            <div class="col-md-6 col-6">
+                                <label class="form-label" for="height">Your Height (cm)?</label>
+                                <input type="number" id="height-desktop" name="height" class="input input-bordered w-100"
+                                    placeholder="e.g. 170" required>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6 col-6">
+                                <label class="form-label" for="weight">Your Weight (kg)?</label>
+                                <input type="number" id="weight-desktop" name="weight" class="input input-bordered w-100"
+                                    placeholder="e.g. 70" required>
+                            </div>
+                            <div class="col-md-6 col-6">
+                                <label class="form-label mobileViewHide- d-none d-md-block" for="bmi">Your calculated BMI:</label>
+                                <label class="form-label mobileViewShow- d-block d-md-none" for="bmi">Your BMI:</label>
+                                <input type="text" id="bmi-desktop" class="input input-bordered w-100" readonly placeholder="Calculated BMI">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="days">Plan for Duration (days)</label>
+                            <input type="number" name="days" class="input input-bordered w-100" placeholder="e.g. 30"
+                                required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="custom-checkbox">
+                                <input name="diabetes" type="checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="form-label">Do you have diabetes?</label>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="other_conditions">Other Health Conditions</label>
+                            <textarea name="other_conditions" class="textarea textarea-bordered w-100" rows="3"
+                                placeholder="List any other health conditions..."></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" id="diet-plan-form" class="btn btn-primary">Get Diet Plan</button>
+                        </div>
+                    </form>
+                </div>
+
+                            <!-- New section for Image Upload fro desktop -->
+            {% if form_submitted %}
+            <div class="row justify-content-center-">
+                <div class="col-md-4-">
+                    <div class="form-card- mt-5  image-section image-section-desktop">
+                        <h3 class="text-center mb-3 text-white" style="font-size: 18px; font-weight: 500;">Check if your food is healthy</h3>
+                        <form class="image-upload-form" id="image-upload-form" method="POST" enctype="multipart/form-data" class="space-y-3">
+                            <div class="mb-3">
+
+                           
+                                    <label for="formFile" class="form-label">Upload an image of your food</label>
+                                    <input class="form-control" type="file" name="food_image" id="food-image-input" required>
+                                
+
+                                <!-- <label class="label-text" for="food_image">Upload an Image of Your Food</label>
+                                <input type="file" name="food_image" id="food-image-input" class="input input-bordered w-100" required> -->
+                            </div>
+                            <!-- Image Preview -->
+                            <div id="image-preview" class="mb-3" style="text-align: center; display: none;">
+                                <img src="" alt="Image Preview" style="max-width: 100%; height: auto; width: 250px; border-radius: 8px;"/>
+                                <div class="col mt-3 px-1 text-white" id="image-result-section-desktop"></div>
+                                <button class="btn btn-block  btn-success mt-2" type="button" id="openOffcanvasBtnDesktop" style="display: none;">
+                                    Start chat for diet & Image Analysis
+                                  </button>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Analyze This Image</button>
+                            </div>
+                        </form>
+                    </div>
+
+                   
+                    
+                </div>
+                <!-- <div class="col-md-6">
+                   
+                    <div class="chatbot-container mt-5" style="display: none;">
+                        <div id="chat-window" class="chat-window">
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="bot-message">Hi! Ask me anything about your diet or this food analysis.
+                                </div>
+                            </div>
+                            <div class="chat-input mt-3">
+                                <div class="input-group">
+                                   
+                                    <input type="text" id="chat-query" placeholder="Type your question..."
+                                        class="form-control" aria-label="Chat query">
+                                    
+                                    <button id="send-button" class="btn btn-primary btn-sm" type="button">
+                                        <i class="fas fa-paper-plane"></i> 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> -->
+
+            </div>
+            {% endif %} 
+            <!--   -->
+            <!-- <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasExampleLabel">Lets chat with me</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <div>
+                   
+                      <div role="alert" class="alert shadow-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          class="stroke-info h-6 w-6 shrink-0">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                          <h3 class="font-bold">About your image</h3>
+                          <div class="text-xs"><div class="col-md-12" id="image-result-section2"></div></div>
+                        </div>
+                        <button class="btn btn-sm">See</button>
+                      </div>
+                    
+                    </div>
+                    <div class="col-md-6-">
+                        <div class="chatbot-container mt-0" style="display: none;">
+                            <div id="chat-window" class="chat-window">
+                                <div id="chat-messages" class="chat-messages">
+                                    <div class="bot-message">Hi! Ask me anything about your diet or this food analysis.
+                                    </div>
+                                </div>
+                                <div class="chat-input mt-3">
+                                    <div class="input-group">
+                                        <input type="text" id="chat-query" placeholder="Type your question..."
+                                            class="form-control" aria-label="Chat query">
+                                        <button id="send-button" class="btn btn-primary btn-sm" type="button">
+                                            <i class="fas fa-paper-plane"></i> 
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            <!--   -->
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <!-- Mobile : sticky menu bg  gradient -->
+    <div class="stickybottom-menu-bg  h-25   d-md-none d-block" id="stickyMenuBg">
+        <div class="mobile-bottom-menu-bg"></div>
+      </div>
+
+      <!-- Footer : Desktop -->
+      <footer class="bg-dark- text-white mt-5 pt-4 pb-2 col-md-12 d-md-block d-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div class="col-md-4">
+              <h5>Quick Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Home</a></li>
+                <li><a href="#" class="text-white">About Us</a></li>
+                <li><a href="#" class="text-white">Services</a></li>
+                <li><a href="#" class="text-white">Contact</a></li>
+              </ul>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer : Mobile -->
+      <div class="bg-secondary-subtle text-white- mt-5 pt-4 pb-2 col-md-12 d-block d-md-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-black me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mx-auto p-5" style="width: 200px;"></div>
+          
+      </div>
+
+        <!-- Desktop : Offcanvas for chatbot -->
+          <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvasExampleDesktop" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasExampleLabel">Lets chat with me</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <div>
+               
+                  <div role="alert" class="alert shadow-lg">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      class="stroke-info h-6 w-6 shrink-0">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                      <h3 class="font-bold">About your image</h3>
+                      <div class="text-xs"><div class="col-md-12" id="image-result-section-desktop2"></div></div>
+                    </div>
+                    <button class="btn btn-sm">See</button>
+                  </div>
+                
+                </div>
+                <div class="col-md-6-">
+                    <!-- Chatbot -->
+                    <div class="chatbot-container mt-0" style="display: none;">
+                        <div id="chat-window" class="chat-window">
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="bot-message">Hi! Ask me anything about your diet or this food analysis.
+                                </div>
+                            </div>
+                            <div class="chat-input mt-3">
+                                <div class="input-group">
+                                    <!-- Chatbot input field -->
+                                    <input type="text" id="chat-query" placeholder="Type your question..."
+                                        class="form-control" aria-label="Chat query">
+                                    <!-- Send button with icon -->
+                                    <button id="send-button" class="btn btn-primary btn-sm" type="button">
+                                        <i class="fas fa-paper-plane"></i> <!-- Icon for send button -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+        <!-- Mobile : offcanvas for chatbot  -->
+        <div class="offcanvas offcanvas-start w-75-" style="max-width: 85%;" tabindex="-1" id="offcanvasExampleMobile" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasExampleLabel">Lets chat with me</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <div>
+                  <div role="alert" class="alert shadow-lg   collapse show" id="imageDetailCollapse">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      class="stroke-info h-6 w-6 shrink-0">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                      <h3 class="font-bold">About your image</h3>
+                      <div class="text-xs"><div class="col-md-12" id="image-result-section-camera2"></div></div>
+                    </div>
+                    <button class="btn btn-sm  border border-secondary-subtle" data-bs-toggle="collapse" data-bs-target="#imageDetailCollapse" aria-expanded="false" aria-controls="imageDetailCollapse">
+                        <i class="fa fa-window-minimize" aria-hidden="true"></i>Minimize this</button>
+                  </div>
+                  <button class="btn btn-sm" id="openImageDetailsButton" data-bs-toggle="collapse" data-bs-target="#imageDetailCollapse" aria-expanded="false" aria-controls="imageDetailCollapse"><i class="fa fa-expand" aria-hidden="true"></i>
+                    View your Image details</button>
+                
+                </div>
+                <div class="col-md-6-">
+                    <div class="d-flex align-items-center"><div class="blinking-green"></div><div class="livechatstatus">Live Chat Active</div></div>
+                    <!-- Chatbot mobile -->
+                    <div class="chatbot-container-mobile mt-0" style="display: none;">
+                        <div id="chat-window-mobile" class="chat-window">
+                            <div id="chat-messages-mobile" class="chat-messages">
+                                <div class="bot-message-mobile">Hi! Ask me anything about your diet or this food analysis.
+                                </div>
+                            </div>
+                            <div class="chat-input mt-3">
+                                <div class="input-group">
+                                    <!-- Chatbot input field -->
+                                    <input type="text" id="chat-query-mobile" placeholder="Type your question..."
+                                        class="form-control" aria-label="Chat query">
+                                    <!-- Send button with icon -->
+                                    <button id="send-button-mobile" class="btn btn-primary btn-sm" type="button">
+                                        <i class="fas fa-paper-plane"></i> <!-- Icon for send button -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+        </div>
+
+        <!-- Mobile: offcanvas menu -->
+        
+        <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+        <div class="offcanvas-header d-none">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small--" style="padding: 0;">
+            <section class="menu__body_mobile">
+                <div class="menu__header_mobile">
+                  <label> 
+                    <div></div>
+                  </label>
+                  <p>Quick Navigation</p>
+                  <button title="Close" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"  onclick="closeMobileStickyBg()">
+                    <div></div>
+                  </button>
+                </div>
+                <div class="menu__links_mobile"><a href="/">Home</a><a href="/features">Features</a><a href="/pricing">Pricing</a><a href="/faqs">Faqs</a><a href="/contact">Contact</a></div>
+                <div class="menu__contact_mobile">
+                    <a href="/"> 
+                        <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                    </svg> -->
+                    <span>Make diet plan</span></a>
+                    <a href="/image_analysis/">
+                        <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Meal Analyser</span></a>
+                    <a href="/analyze_report"> 
+                        <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Medical Report</span></a></div>
+              </section>
+        </div>
+        </div>
+
+        <!-- Mobile : offcanvas for videos -->
+        <div class="offcanvas offcanvas-bottom      d-block d-md-none" style="height: 80vh;" tabindex="-1" id="offcanvas-videos" aria-labelledby="offcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasLabel">Offcanvas Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>This is the content inside the offcanvas!</p>
+                <div class="video-preview col-md-12 mt-3">
+                    <large class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">Recommended Exercise Videos</large>
+
+                    <label class="text-black d-none" for="exercise_videos">Recommended Exercise Videos</label>
+                    <div class="video-list mt-2">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            {% for video in exercise_videos %}
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body" style="padding: 15px;">
+                                    <h5 class="card-title d-none">{{ video.title }}</h5>
+                                    <p class="card-text d-none-">{{ video.title }}</p>
+                                    </div>
+                                    <p style="position: relative; width: 100%; height: 100%;">
+                                    <iframe width=100% height=100%
+                                        src="https://www.youtube.com/embed/{{ video.url.split('v=')[-1] }}"
+                                        title="{{ video.title }}" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen></iframe></p>
+                                </div>
+                            </div>
+
+
+                            <!-- <div class="video-item ">
+                                <p style="font-size: 20px;">{{ video.title }}</p>
+                                <iframe width="560" height="315"
+                                    src="https://www.youtube.com/embed/{{ video.url.split('v=')[-1] }}"
+                                    title="{{ video.title }}" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <hr> -->
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+
+    <!-- Bootstrap and Tailwind JS (for form styling if needed) -->
+     <script src="static/js/bmi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+ 
+  // Bmi calculation 
+document.addEventListener('DOMContentLoaded', function () {
+    // Mobile Elements
+    const heightMobile = document.getElementById('height-mobile');
+    const weightMobile = document.getElementById('weight-mobile');
+    const bmiMobile = document.getElementById('bmi-mobile');
+
+    // Desktop Elements
+    const heightDesktop = document.getElementById('height-desktop');
+    const weightDesktop = document.getElementById('weight-desktop');
+    const bmiDesktop = document.getElementById('bmi-desktop');
+
+    // Function to calculate BMI
+    function calculateBMI(heightInput, weightInput, bmiOutput) {
+        const height = parseFloat(heightInput.value);
+        const weight = parseFloat(weightInput.value);
+
+        if (height > 0 && weight > 0) {
+            const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+            bmiOutput.value = bmi; // Update BMI field
+            console.log(`BMI (${bmi}) calculated for:`, bmiOutput.id);
+        } else {
+            bmiOutput.value = ''; // Clear BMI if invalid
+            console.log(`Invalid input for BMI calculation: ${bmiOutput.id}`);
+        }
+    }
+
+    // Add event listeners for mobile
+    if (heightMobile && weightMobile && bmiMobile) {
+        heightMobile.addEventListener('input', () => calculateBMI(heightMobile, weightMobile, bmiMobile));
+        weightMobile.addEventListener('input', () => calculateBMI(heightMobile, weightMobile, bmiMobile));
+    }
+
+    // Add event listeners for desktop
+    if (heightDesktop && weightDesktop && bmiDesktop) {
+        heightDesktop.addEventListener('input', () => calculateBMI(heightDesktop, weightDesktop, bmiDesktop));
+        weightDesktop.addEventListener('input', () => calculateBMI(heightDesktop, weightDesktop, bmiDesktop));
+    }
+});
+
+
+        // preveious version for show/hide form
+let showFormBtn = document.getElementById('addremoveForm');
+let detailForm = document.getElementById('detailForm');
+let userDetail = document.getElementById('form-details');
+let showmydetails = document.getElementById('showmydetails');
+showFormBtn.addEventListener('click', function() {
+    detailForm.classList.remove('hidden');  
+    detailForm.classList.add('d-block');  
+    userDetail.classList.add('hidden');
+    showmydetails.classList.remove('hidden');  
+    showmydetails.classList.add('null');
+});
+let showFormBtn2 = document.getElementById('addremoveForm2');
+let detailForm2 = document.getElementById('detailForm2');
+let userDetail2 = document.getElementById('form-details2');
+let showmydetails2 = document.getElementById('showmydetails2');
+showFormBtn2.addEventListener('click', function() {
+    detailForm2.classList.remove('hidden');  
+    detailForm2.classList.add('d-block');  
+    userDetail2.classList.add('hidden');
+    showmydetails2.classList.remove('hidden');  
+    showmydetails2.classList.add('null');
+});
+// new way to showhide form with single class
+// let showFormBtns = document.querySelectorAll('.showform');
+// let detailForm = document.getElementsByClassName('detailForm');
+// let userDetail = document.getElementsByClassName('form-details');
+// let showmydetails = document.getElementById('showmydetails');
+// showFormBtns.forEach(btn => {
+//   btn.addEventListener('click', function() {
+//     console.log('click')
+//     let detailForm = document.getElementsByClassName('detailForm');
+// let userDetail = document.getElementsByClassName('form-details');
+// let showmydetails = document.getElementById('showmydetails');
+
+//     detailForm.classList.remove('hidden');  
+//     detailForm.classList.add('d-block');  
+//     userDetail.classList.add('hidden');
+//     showmydetails.classList.remove('hidden');  
+//     showmydetails.classList.add('null');
+
+    
+//     // detailForm.classList.toggle('hidden');
+//     // detailForm.classList.toggle('d-block');
+//     // userDetail.classList.toggle('hidden');
+//     // showmydetails.classList.toggle('hidden');
+//     // showmydetails.classList.toggle('');
+//   });
+// });
+
+showmydetails.addEventListener('click', function() {
+    detailForm.classList.add('hidden');
+    detailForm.classList.remove('d-block');  
+    userDetail.classList.remove('hidden');
+    showmydetails.classList.add('hidden');
+});
+showmydetails2.addEventListener('click', function() {
+    detailForm2.classList.add('hidden');
+    detailForm2.classList.remove('d-block');  
+    userDetail2.classList.remove('hidden');
+    showmydetails2.classList.add('hidden');
+});
+
+// for ofcanvas chatbox and image resp
+
+let offcanvasElementDesktop = document.getElementById('offcanvasExampleDesktop');
+let offcanvas = new bootstrap.Offcanvas(offcanvasElementDesktop);
+const openOffcanvasBtnDesktop = document.getElementById('openOffcanvasBtnDesktop');
+openOffcanvasBtnDesktop.addEventListener('click', function() {
+    offcanvas.show(); 
+  });
+
+  let offcanvasElementMobile = document.getElementById('offcanvasExampleMobile');
+let offcanvasMobile = new bootstrap.Offcanvas(offcanvasElementMobile);
+const openOffcanvasBtnMobile = document.getElementById('openOffcanvasBtnMobile');
+openOffcanvasBtnMobile.addEventListener('click', function() {
+    offcanvasMobile.show(); 
+  });
+
+
+
+            // Image preview 
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('food-image-input');
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = previewContainer.querySelector('img');
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        previewImage.src = e.target.result;
+                        previewContainer.style.display = 'block'; // Show the preview container
+                    };
+
+                    reader.readAsDataURL(file); // Read the file as a Data URL
+                } else {
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none'; // Hide the preview container if no file selected
+                }
+            });
+        });
+        // image preview container FOR camera image
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInputCamera = document.getElementById('camera-capture');
+            const previewContainerCamera = document.getElementById('image-preview-camera-capture');
+            const previewImageC = previewContainerCamera.querySelector('img');
+
+            fileInputCamera.addEventListener('change', () => {
+                const file = fileInputCamera.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        previewImageC.src = e.target.result;
+                        previewContainerCamera.style.display = 'block'; // Show the preview container
+                    };
+
+                    reader.readAsDataURL(file); // Read the file as a Data URL
+                } else {
+                    previewImageC.src = '';
+                    previewContainerCamera.style.display = 'none'; // Hide the preview container if no file selected
+                }
+            });
+        });
+
+
+        // Handle the Image Upload form submission with AJAX
+        //for dektop
+        const imageForm = document.getElementById('image-upload-form');
+        const imageForm2 = document.getElementById('image-upload-form2');
+        let imagesection = document.getElementsByClassName("image-section");
+        let imagesectiondesktop = document.getElementsByClassName("image-section-desktop");
+        
+        if (imageForm) {
+            imageForm.addEventListener('submit', async (event) => {
+                event.preventDefault();  // Prevent default form submission
+                imagesectiondesktop[0].style.opacity = 0.5;
+                
+                const formData = new FormData(imageForm);
+
+                try {
+                    const response = await fetch('/analyze-image', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+
+                    if (data.result) {
+                        // Update the image result section with the new result
+                        imagesectiondesktop[0].style.opacity = 1;
+
+                        document.getElementById('image-result-section-desktop').innerHTML = `<p>${data.result}</p>`;
+                        document.getElementById('image-result-section-desktop2').innerHTML = `<p>${data.result}</p>`;
+                        offcanvas.show();
+                        document.getElementById('openOffcanvasBtnDesktop').style.display = 'block';
+                        // Ensure the chatbot container is visible
+                        const chatbotContainer = document.querySelector('.chatbot-container');
+                        if (chatbotContainer) {
+                            chatbotContainer.style.display = 'block';  // Make chatbot visible after result
+                        }
+                    } else {
+                        document.getElementById('image-result-section-desktop').innerHTML = '<p>Error: No result found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        if (imageForm2) {
+            imageForm2.addEventListener('submit', async (event) => {
+                event.preventDefault();  // Prevent default form submission
+                imagesection[0].style.opacity = 0.5;
+                
+                const formData2 = new FormData(imageForm2);
+
+                try {
+                    const response2 = await fetch('/analyze-image', {
+                        method: 'POST',
+                        body: formData2,
+                    });
+
+                    const data2 = await response2.json();
+
+                    if (data2.result) {
+                        // Update the image result section with the new result
+                        imagesection[0].style.opacity = 1;
+
+                        document.getElementById('image-result-section-camera').innerHTML = `<p>${data2.result}</p>`;
+                        document.getElementById('image-result-section-camera2').innerHTML = `<p>${data2.result}</p>`;
+                        offcanvasMobile.show();
+                        document.getElementById('openOffcanvasBtnMobile').style.display = 'block';
+                        // Ensure the chatbot container is visible
+                        const chatbotContainer = document.querySelector('.chatbot-container-mobile');
+                        if (chatbotContainer) {
+                            chatbotContainer.style.display = 'block';  // Make chatbot visible after result
+                        }
+                    } else {
+                        document.getElementById('image-result-section-camera').innerHTML = '<p>Error: No result found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // chatbot Desktop
+        document.addEventListener('DOMContentLoaded', () => {
+    const sendButton = document.getElementById('send-button');
+    const chatQuery = document.getElementById('chat-query');
+    const chatMessages = document.getElementById('chat-messages');
+
+    if (sendButton && chatQuery && chatMessages) {
+        // Function to send the message
+        const sendMessage = async () => {
+            const query = chatQuery.value.trim();
+            if (!query) return;
+
+            // Append user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            userMessage.textContent = query;
+            chatMessages.appendChild(userMessage);
+
+            // Clear input
+            chatQuery.value = '';
+
+            // Send query to the server
+            try {
+                const response = await fetch('/ask-bot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const data = await response.json();
+
+                // Append bot message
+                const botMessage = document.createElement('div');
+                botMessage.className = 'bot-message';
+                botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
+                chatMessages.appendChild(botMessage);
+
+                // Scroll to the latest message
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        // Trigger message send on button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Trigger message send on pressing the Enter key
+        chatQuery.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();  // Prevent the default action (e.g., submitting a form)
+                sendMessage();  // Send the message
+            }
+        });
+    }
+});
+
+        // chatbot for mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendButton = document.getElementById('send-button-mobile');
+            const chatQuery = document.getElementById('chat-query-mobile');
+            const chatMessages = document.getElementById('chat-messages-mobile');
+
+            if (sendButton && chatQuery && chatMessages) {
+                sendButton.addEventListener('click', async () => {
+                    const query = chatQuery.value.trim();
+                    if (!query) return;
+
+                    // Append user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'user-message-mobile';
+                    userMessage.textContent = query;
+                    chatMessages.appendChild(userMessage);
+
+                    // Clear input
+                    chatQuery.value = '';
+
+                    // Send query to the server
+                    try {
+                        const response = await fetch('/ask-bot', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ query })
+                        });
+                        const data = await response.json();
+
+                        // Append bot message
+                        const botMessage = document.createElement('div');
+                        botMessage.className = 'bot-message-mobile';
+                        botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
+                        chatMessages.appendChild(botMessage);
+
+                        // Scroll to the latest message
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
+
+        // Mobile offcanvas: show or hide the image detail view
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageDetailCollapse = document.getElementById('imageDetailCollapse');
+            const openImageDetailsButton = document.getElementById('openImageDetailsButton');
+
+            function updateButtonVisibility() {
+                if (imageDetailCollapse.classList.contains('show')) {
+                    openImageDetailsButton.classList.add('d-none');
+                } else {
+                    openImageDetailsButton.classList.remove('d-none');
+                }
+            }
+
+            updateButtonVisibility();
+
+            imageDetailCollapse.addEventListener('hidden.bs.collapse', updateButtonVisibility);
+            imageDetailCollapse.addEventListener('shown.bs.collapse', updateButtonVisibility);
+        });
+
+        // Mobile : mobile quick menu bg
+        function toggleStickyMenu() {
+            const stickyMenu = document.getElementById('stickyMenuBg');
+            if (stickyMenu.classList.contains('h-25')) {
+                stickyMenu.classList.remove('h-25');
+                stickyMenu.classList.add('h-75');
+            } else {
+                stickyMenu.classList.remove('h-75');
+                stickyMenu.classList.add('h-25');
+            }
+        }
+        
+        function closeMobileStickyBg() {
+            const stickyMenu = document.getElementById('stickyMenuBg');
+            stickyMenu.classList.remove('h-75');
+            stickyMenu.classList.add('h-25');
+        }
+
+
+
+
+        // Mobile: Main menu bottom navigation
+        // const buttonMobile = document.querySelector('.menu__button_mobile');
+        // const menuMobile = document.querySelector('.menu__body_mobile');
+        // const closeMobile = document.querySelector('.menu__header_mobile button');
+        // const overlayMobile = document.querySelector('.menu__overlay_mobile');
+
+        // function showMenuMobile () {
+        //     console.log('mobile clicked');
+        //     buttonMobile.setAttribute('hidden', '');
+        //     menuMobile.removeAttribute('hidden');
+        //     overlayMobile.removeAttribute('hidden');
+        // };
+
+        // function hideMenuMobile () {
+        //     menuMobile.setAttribute('hidden', '');
+        //     overlayMobile.setAttribute('hidden', '');
+        //     buttonMobile.removeAttribute('hidden');
+        // };
+
+        // buttonMobile.addEventListener('click', showMenuMobile);
+        // closeMobile.addEventListener('click', hideMenuMobile);
+        // overlayMobile.addEventListener('click', hideMenuMobile);
+
+
+// ofcanvas div for vedeos
+// Initialize the offcanvas component
+// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
+//         const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
+
+//         // Flag to track if offcanvas is already opened
+//         let isOffcanvasShown = false;
+
+//         // Scroll event listener
+//         window.addEventListener('scroll', function() {
+//             // Get the position of the trigger div
+//             const triggerDiv = document.getElementById('triggerDiv');
+//             const triggerPosition = triggerDiv.getBoundingClientRect().top;
+            
+//             // Check if user has scrolled past the trigger div
+//             if (triggerPosition <= window.innerHeight && !isOffcanvasShown) {
+//                 // Show offcanvas if not already shown
+//                 offcanvasVideo.show();
+//                 isOffcanvasShown = true;
+//             }
+//         });
+
+//         // Close event listener for offcanvas
+//         document.querySelector('.btn-close').addEventListener('click', function() {
+//             isOffcanvasShown = false;
+//         });
+
+
+
+////////////////////////// offcanvas video functon //////////////////////////////////////
+// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
+// const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
+
+// // Flag to track if offcanvas is already opened
+// let isOffcanvasShown = false;
+
+// // Function to check if the screen size is larger than mobile
+// function isMobileScreen() {
+//     return window.innerWidth < 992; // 992px is the breakpoint for 'md' in Bootstrap
+// }
+
+// // Scroll event listener
+// window.addEventListener('scroll', function() {
+//     // Get the position of the trigger div
+//     const triggerDiv = document.getElementById('triggerDiv');
+//     const triggerPosition = triggerDiv.getBoundingClientRect().top;
+    
+//     // Check if user has scrolled past the trigger div and screen is mobile
+//     if (triggerPosition <= window.innerHeight && !isOffcanvasShown && isMobileScreen()) {
+//         // Show offcanvas if not already shown
+//         offcanvasVideo.show();
+//         isOffcanvasShown = true;
+//     }
+// });
+
+// // Close event listener for offcanvas
+// offcanvasVideoEl.addEventListener('hidden.bs.offcanvas', function () {
+//     isOffcanvasShown = false;
+
+//     // Remove offcanvas lock on scroll when offcanvas is closed and it's a mobile screen
+//     if (!isMobileScreen()) {
+//         document.body.style.overflow = '';  // Reset overflow property when offcanvas is closed
+//     }
+// });
+
+// // Handle page resize to ensure scroll-lock only applies on mobile screens
+// window.addEventListener('resize', function() {
+//     if (!isMobileScreen() && isOffcanvasShown) {
+//         // Remove scroll-lock behavior on desktop if offcanvas is shown and the screen is resized
+//         document.body.style.overflow = '';  // Reset overflow property when resized to desktop
+//     }
+// });
+
+
+
+const offcanvasCloseBtn = document.querySelector('#offcanvas-videos .btn-close');
+if (offcanvasCloseBtn) {
+    offcanvasCloseBtn.addEventListener('click', function() {
+        isOffcanvasShown = false; // Reset the flag when the offcanvas is closed
+    });
+}
+
+
+
+    </script>
+
+</body>
+
+</html>

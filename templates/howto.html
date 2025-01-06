@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faqs</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- DaisyUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            /* background-color: #c4c1c1; */
+            /* background: rgb(233,233,233);
+background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
+
+
+
+background: rgb(240,241,246);
+background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
+background-image: url({{ url_for('static', filename='bg.png') }});
+background-size: cover;
+        }
+
+        .chatbot-container {
+            /* border: 1px solid #ddd; */
+            border-radius: 8px;
+            /* background-color: #f9f9f9; */
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 200px;
+            /* Set a fixed height for the whole chatbot container */
+        }
+
+        #chat-window {
+            /* background-color: #fff; */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+
+            height:72vh;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 10px;
+            overflow-y: auto;
+            /* Only the messages should scroll */
+            height: 100%;
+            /* Fill the available space */
+        }
+
+        .user-message,
+        .bot-message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            display: inline-block;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #e5e5e5;
+            color: black;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            padding-top: 10px;
+            /* background-color: #f1f1f1; */
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+        }
+
+        #chat-query {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            max-height: 50px;
+            /* Fixed height for input */
+            overflow: hidden;
+            /* No scroll inside the input */
+        }
+
+        #send-button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            width: 45px;
+            height: 45px;
+        }
+
+        #send-button i {
+            font-size: 20px;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        input:focus,
+        button:focus {
+            outline: none;
+        }
+
+
+        .text-card,
+        .form-card {
+            margin-top: 40px;
+            /* margin-top: 100px; */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-card {
+            background-color: #ffffff;
+            padding: 318px 100px 192px 100px;
+            /*padding: 318px 100px 318px 100px;*/
+
+            background-image: url({{ url_for('static', filename='bg2.jpg') }});
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-card {
+            /* background-color: #28292b; */
+            background: rgb(7,75,168);
+background: linear-gradient(36deg, rgba(7,75,168,1) 0%, rgba(10,13,14,1) 100%);
+            padding: 25px 20px 25px 20px;
+        }
+
+        .label-text {
+            color: white;
+            font-weight: 700;
+            font-size: larger;
+        }
+
+        .input,
+        .textarea,
+        .toggle {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        #form-card {
+            background-color: #e5e7eb;
+        }
+
+        /* Custom Checkbox */
+        .custom-checkbox {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 16px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-checkbox .checkmark {
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .custom-checkbox .checkmark::before {
+            content: "\2713";
+            font-size: 16px;
+            color: transparent;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark {
+            background-color: #333;
+            border-color: #333;
+            transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark::before {
+            color: #fff;
+        }
+
+        .custom-checkbox:hover {
+            color: #666;
+        }
+
+        .custom-checkbox:hover .checkmark {
+            border-color: #f1e4e4;
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .custom-checkbox input[type="checkbox"]:focus+.checkmark {
+            box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+            outline: none;
+        }
+
+
+
+
+        /* updated: for hide the div*/
+        .diet_plan_space {
+            display: block;
+        }
+        .response {
+            display: none;
+        }
+        .response.show {
+            display: block;
+        }
+        .video-item {
+        position: relative;
+        overflow: hidden;
+        /* height: 0; */
+        }
+        .video-item iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* aspect-ratio: 16 / 9; */
+        }
+        .form-label{
+            color: #ddd;
+        }
+
+        .diet-resp-section{
+            background: rgb(7,75,168);
+            background: linear-gradient(36deg, rgb(223, 223, 223) 0%, rgb(156, 156, 156) 100%);
+            padding: 25px 20px 25px 20px;
+
+            margin-top: 100px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .diet-resp-section .label-text{
+            color: #082d5e;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .image-section {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(49, 55, 82, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+            padding: 25px 20px 25px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .offcanvas {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(213, 213, 213, 0.45);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+        }
+
+        /* for animated text */
+       
+        h1.heading {
+        font-size: 2.2rem;
+        color: #121212;
+        text-transform: uppercase;
+        /* font-weight: bold; */
+        letter-spacing: 2px;
+
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+        }
+
+        h1 span {
+        animation: flow 2s ease-in-out infinite;
+        background: linear-gradient(60deg, #FF6954, #B546FF);
+        background-size: 300%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes flow {
+        0% {
+            background-position: 0 50%
+        }
+        
+        50% {
+            background-position: 50% 100%
+        }
+        
+        100% {
+            background-position: 0 50%
+        }
+        }
+
+        @media screen and (max-width: 768px) {
+        h1.heading {
+            font-size: 2rem;
+        }
+        }
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Bottom Menu -->
+    <div class="col-md-12 d-md-none d-block">
+        <button class="menu__button_mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" onclick="toggleStickyMenu()">
+            <div>
+              <div><i class="fa fa-bars" aria-hidden="true"></i>
+              </div>
+            </div>Quick Menu
+        </button>
+    </div>
+
+    <!-- Desktop : side menu bar -->
+    <div id="sidebar-menu-wrapper" class="d-md-block d-none">
+        <ul class='sidebar-menu' style="list-style-type: none;">
+            <li>
+              <a class="fa fa-file-text-o fa-2x" href="/analyze_report">    
+                <span>Check Reports</span>
+              </a> 
+            </li>
+            
+            <li>
+              <a class="fa fa-life-ring" href="/">
+                <span>Make Diet Plan</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-camera" href="/image_analysis">
+                <span>Meal Analyzer</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-question" href="/howto">
+              <span>How To Use</span>
+              </a> 
+            </li>
+            
+          </ul>
+        </div>
+
+    <div class="header   d-block d-md-none">
+        <div class="inner-header flex">
+        <img src="../static/logo.png" style="width: 70px; height: auto;" alt="">
+        <h1 class="heading-mob-header">your fitness <span class='animate'>Instructor!</span></h1>
+
+        </div>
+        
+        <!--Waves Container-->
+        <div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+        </svg>
+        </div>
+        <!--Waves end-->
+        
+        </div>
+        <!--Header ends-->
+
+    <header class="p-3 text-bg-dark d-none d-md-block">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="../static/logo.png" style="width: 50px;" alt="" />
+              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
+              <li><a href="{{ url_for('features') }}" class="nav-link px-2 text-white">Features</a></li>
+              <li><a href="{{ url_for('pricing') }}" class="nav-link px-2 text-white">Pricing</a></li>
+              <li><a href="{{ url_for('faqs') }}" class="nav-link px-2 text-white">FAQs</a></li>
+              <li><a href="{{ url_for('contact') }}" class="nav-link px-2 text-white">Contact</a></li>
+
+            </ul>
+    
+            <div class="text-end">
+              <!-- <button type="button" class="btn btn-outline-light me-2">Login</button> -->
+              <button type="button" class="btn btn-warning"   onclick="window.location.href='{{url_for('howto')}}';">How to use</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+    <div class="container">
+
+        <div class="text-center mt-3 col-md-12">
+            
+            <h1 class="heading">Watch Our <span class='animate'>Featured Video!</span></h1>
+        
+    </div>
+
+    <div class="container mt-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="ratio ratio-16x9">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/0T451RSgbtI?si=UryJDsVGrsuQilv5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+    
+    </div>
+       <!-- Mobile : sticky menu bg  gradient -->
+        <div class="stickybottom-menu-bg  h-25   d-md-none d-block" id="stickyMenuBg">
+            <div class="mobile-bottom-menu-bg"></div>
+          </div>
+
+
+      <!-- Footer : Desktop -->
+      <footer class="bg-dark- text-white mt-5 pt-4 pb-2 col-md-12 d-md-block d-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 2: Quick Links -->
+            <div class="col-md-4">
+              <h5>Quick Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Home</a></li>
+                <li><a href="#" class="text-white">About Us</a></li>
+                <li><a href="#" class="text-white">Services</a></li>
+                <li><a href="#" class="text-white">Contact</a></li>
+              </ul>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer : Mobile -->
+      <div class="bg-secondary-subtle text-white- mt-5 pt-4 pb-2 col-md-12 d-block d-md-none">
+        <div class="container">
+          <div class="row">
+            <!-- Column 1: Company Info -->
+            <div class="col-md-4">
+              <h5>Meta Affinity</h5>
+              <p>Address: Paksitan</p>
+              <p>Phone: +123 456 789</p>
+              <p>Email: hi@metaaffinity.net</p>
+            </div>
+    
+            <!-- Column 3: Social Media Links -->
+            <div class="col-md-4">
+              <h5>Follow Us</h5>
+              <a href="#" class="text-black me-3"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-black me-3"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+    
+          <!-- Row for Copyright -->
+          <div class="row mt-4">
+            <div class="col text-center">
+              <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mx-auto p-5" style="width: 200px;"></div>
+          
+      </div>
+
+      
+        <!-- Mobile: offcanvas menu -->
+        
+        <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+            <div class="offcanvas-header d-none">
+                <h5 class="offcanvas-title" id="offcanvasBottomLabel">menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body small--" style="padding: 0;">
+                <section class="menu__body_mobile">
+                    <div class="menu__header_mobile">
+                      <label> 
+                        <div></div>
+                      </label>
+                      <p>Quick Navigation</p>
+                      <button title="Close" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"  onclick="closeMobileStickyBg()">
+                        <div></div>
+                      </button>
+                    </div>
+                    <div class="menu__links_mobile"><a href="/">Home</a><a href="/features">Features</a><a href="/pricing">Pricing</a><a href="/faqs">Faqs</a><a href="/contact">Contact</a></div>
+                    <div class="menu__contact_mobile">
+                        <a href="/"> 
+                            <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                        </svg> -->
+                        <span>Make diet plan</span></a>
+                        <a href="/image_analysis/">
+                            <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg> -->
+                        <span>Meal Analyser</span></a>
+                        <a href="/analyze_report"> 
+                            <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                          <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg> -->
+                        <span>Medical Report</span></a></div>
+                  </section>
+            </div>
+            </div>
+
+
+    <!-- Bootstrap and Tailwind JS (for form styling if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+let showFormBtn = document.getElementById('addremoveForm');
+let detailForm = document.getElementById('detailForm');
+let userDetail = document.getElementById('form-details');
+let showmydetails = document.getElementById('showmydetails');
+showFormBtn.addEventListener('click', function() {
+    detailForm.classList.remove('hidden');  
+    detailForm.classList.add('d-block');  
+    userDetail.classList.add('hidden');
+    showmydetails.classList.remove('hidden');  
+    showmydetails.classList.add('');
+});
+
+showmydetails.addEventListener('click', function() {
+    detailForm.classList.add('hidden');
+    detailForm.classList.remove('d-block');  
+    userDetail.classList.remove('hidden');
+    showmydetails.classList.add('hidden');
+});
+// for ofcanvas chatbox and image resp
+let offcanvasElement = document.getElementById('offcanvasExample');
+let offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+const openOffcanvasBtn = document.getElementById('openOffcanvasBtn');
+openOffcanvasBtn.addEventListener('click', function() {
+    offcanvas.show(); 
+  });
+
+
+
+
+
+            // Image preview 
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('food-image-input');
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = previewContainer.querySelector('img');
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        previewImage.src = e.target.result;
+                        previewContainer.style.display = 'block'; // Show the preview container
+                    };
+
+                    reader.readAsDataURL(file); // Read the file as a Data URL
+                } else {
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none'; // Hide the preview container if no file selected
+                }
+            });
+        });
+
+        // Get height and weight inputs
+        const heightInput = document.getElementById('height');
+        const weightInput = document.getElementById('weight');
+        const bmiOutput = document.getElementById('bmi');
+
+        // Function to calculate BMI
+        function calculateBMI() {
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+
+            if (height > 0 && weight > 0) {
+                const bmi = (weight / ((height / 100) ** 2)).toFixed(2); // Calculate BMI
+                bmiOutput.value = bmi; // Display the BMI value
+            } else {
+                bmiOutput.value = ''; // Clear the BMI value if inputs are invalid
+            }
+        }
+
+        // Attach event listeners to inputs
+        heightInput.addEventListener('input', calculateBMI);
+        weightInput.addEventListener('input', calculateBMI);
+
+
+        // Handle the Image Upload form submission with AJAX
+        const imageForm = document.getElementById('image-upload-form');
+        let imagesection = document.getElementsByClassName("image-section");
+        
+        if (imageForm) {
+            imageForm.addEventListener('submit', async (event) => {
+                event.preventDefault();  // Prevent default form submission
+                imagesection[0].style.opacity = 0.5;
+                
+                const formData = new FormData(imageForm);
+
+                try {
+                    const response = await fetch('/analyze-image', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+
+                    if (data.result) {
+                        // Update the image result section with the new result
+                        imagesection[0].style.opacity = 1;
+
+                        document.getElementById('image-result-section').innerHTML = `<p>${data.result}</p>`;
+                        document.getElementById('image-result-section2').innerHTML = `<p>${data.result}</p>`;
+                        offcanvas.show();
+                        document.getElementById('openOffcanvasBtn').style.display = 'block';
+                        // Ensure the chatbot container is visible
+                        const chatbotContainer = document.querySelector('.chatbot-container');
+                        if (chatbotContainer) {
+                            chatbotContainer.style.display = 'block';  // Make chatbot visible after result
+                        }
+                    } else {
+                        document.getElementById('image-result-section').innerHTML = '<p>Error: No result found.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // chatbot interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendButton = document.getElementById('send-button');
+            const chatQuery = document.getElementById('chat-query');
+            const chatMessages = document.getElementById('chat-messages');
+
+            if (sendButton && chatQuery && chatMessages) {
+                sendButton.addEventListener('click', async () => {
+                    const query = chatQuery.value.trim();
+                    if (!query) return;
+
+                    // Append user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'user-message';
+                    userMessage.textContent = query;
+                    chatMessages.appendChild(userMessage);
+
+                    // Clear input
+                    chatQuery.value = '';
+
+                    // Send query to the server
+                    try {
+                        const response = await fetch('/ask-bot', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ query })
+                        });
+                        const data = await response.json();
+
+                        // Append bot message
+                        const botMessage = document.createElement('div');
+                        botMessage.className = 'bot-message';
+                        botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
+                        chatMessages.appendChild(botMessage);
+
+                        // Scroll to the latest message
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

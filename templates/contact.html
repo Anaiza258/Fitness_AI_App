@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- DaisyUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            /* background-color: #c4c1c1; */
+            /* background: rgb(233,233,233);
+background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
+
+
+
+background: rgb(240,241,246);
+background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
+background-image: url({{ url_for('static', filename='bg.png') }});
+background-size: cover;
+        }
+
+
+        /* for animated text */
+       
+        h1.heading {
+        font-size: 2.2rem;
+        color: #121212;
+        text-transform: uppercase;
+        /* font-weight: bold; */
+        letter-spacing: 2px;
+
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+        }
+
+        h1 span {
+        animation: flow 2s ease-in-out infinite;
+        background: linear-gradient(60deg, #FF6954, #B546FF);
+        background-size: 300%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes flow {
+        0% {
+            background-position: 0 50%
+        }
+        
+        50% {
+            background-position: 50% 100%
+        }
+        
+        100% {
+            background-position: 0 50%
+        }
+        }
+
+        @media screen and (max-width: 768px) {
+        h1.heading {
+            font-size: 2rem;
+        }
+        }
+
+
+
+
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Mobile Bottom Menu -->
+    <div class="col-md-12 d-md-none d-block">
+        <button class="menu__button_mobile" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" onclick="toggleStickyMenu()">
+            <div>
+              <div><i class="fa fa-bars" aria-hidden="true"></i>
+              </div>
+            </div>Quick Menu
+        </button>
+    </div>
+
+    <!-- Desktop : side menu bar -->
+    <div id="sidebar-menu-wrapper" class="d-md-block d-none">
+        <ul class='sidebar-menu' style="list-style-type: none;">
+            <li>
+              <a class="fa fa-file-text-o fa-2x" href="/analyze_report">    
+                <span>Check Reports</span>
+              </a> 
+            </li>
+            
+            <li>
+              <a class="fa fa-life-ring" href="/">
+                <span>Make Diet Plan</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-camera" href="/image_analysis">
+                <span>Meal Analyzer</span>
+              </a>
+            </li>
+            
+            <li>
+              <a class="fa fa-question" href="/howto">
+              <span>How To Use</span>
+              </a> 
+            </li>
+            
+          </ul>
+        </div>
+
+    <div class="header   d-block d-md-none">
+        <div class="inner-header flex">
+        <img src="../static/logo.png" style="width: 70px; height: auto;" alt="">
+        <h1 class="heading-mob-header">your fitness <span class='animate'>Instructor!</span></h1>
+
+        </div>
+        
+        <!--Waves Container-->
+        <div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+        <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+        <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+        <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+        </svg>
+        </div>
+        <!--Waves end-->
+        
+        </div>
+        <!--Header ends-->
+
+    <header class="p-3 text-bg-dark d-none d-md-block">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="../static/logo.png" style="width: 50px;" alt="" />
+              <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="{{ url_for('home') }}" class="nav-link px-2 text-white">Home</a></li>
+              <li><a href="{{ url_for('features') }}" class="nav-link px-2 text-white">Features</a></li>
+              <li><a href="{{ url_for('pricing') }}" class="nav-link px-2 text-white">Pricing</a></li>
+              <li><a href="{{ url_for('faqs') }}" class="nav-link px-2 text-white">FAQs</a></li>
+              <li><a href="{{ url_for('contact') }}" class="nav-link px-2 text-white">Contact</a></li>
+
+            </ul>
+    
+            <div class="text-end">
+              <!-- <button type="button" class="btn btn-outline-light me-2">Login</button> -->
+              <button type="button" class="btn btn-warning"   onclick="window.location.href='{{url_for('howto')}}';">How to use</button>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+    <main class="flex-grow-1">
+        <div class="container">
+
+            <div class="text-center mt-3 col-md-12">
+                
+                <h1 class="heading">Contact <span class='animate'>Us!</span></h1>
+            
+        </div>
+    
+        <div class="container mt-5">
+    
+            <div class="row justify-content-center">
+                <div class="col-md-8 py-5">
+                    <h3 class="display-5 text-center">Say hello to hi@metaaffinity.net</h3>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    </main>
+    
+
+       <!-- Mobile : sticky menu bg  gradient -->
+       <div class="stickybottom-menu-bg  h-25   d-md-none d-block" id="stickyMenuBg">
+            <div class="mobile-bottom-menu-bg"></div>
+       </div>
+
+
+  <!-- Footer : Desktop -->
+  <footer class="bg-dark- text-white mt-out pt-4 pb-2 col-md-12 d-md-block d-none">
+    <div class="container">
+      <div class="row">
+        <!-- Column 1: Company Info -->
+        <div class="col-md-4">
+          <h5>Meta Affinity</h5>
+          <p>Address: Paksitan</p>
+          <p>Phone: +123 456 789</p>
+          <p>Email: hi@metaaffinity.net</p>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Home</a></li>
+            <li><a href="#" class="text-white">About Us</a></li>
+            <li><a href="#" class="text-white">Services</a></li>
+            <li><a href="#" class="text-white">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Social Media Links -->
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Row for Copyright -->
+      <div class="row mt-4">
+        <div class="col text-center">
+          <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Footer : Mobile -->
+  <div class="bg-secondary-subtle text-white- mt-5 pt-4 pb-2 col-md-12 d-block d-md-none">
+    <div class="container">
+      <div class="row">
+        <!-- Column 1: Company Info -->
+        <div class="col-md-4">
+          <h5>Meta Affinity</h5>
+          <p>Address: Paksitan</p>
+          <p>Phone: +123 456 789</p>
+          <p>Email: hi@metaaffinity.net</p>
+        </div>
+
+        <!-- Column 3: Social Media Links -->
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <a href="#" class="text-black me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-black me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-black me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-black me-3"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Row for Copyright -->
+      <div class="row mt-4">
+        <div class="col text-center">
+          <p class="mb-0">&copy; 2024 MetaAffinity. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto p-5" style="width: 200px;"></div>
+      
+  </div>
+
+  
+    <!-- Mobile: offcanvas menu -->
+    
+    <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+        <div class="offcanvas-header d-none">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small--" style="padding: 0;">
+            <section class="menu__body_mobile">
+                <div class="menu__header_mobile">
+                  <label> 
+                    <div></div>
+                  </label>
+                  <p>Quick Navigation</p>
+                  <button title="Close" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"  onclick="closeMobileStickyBg()">
+                    <div></div>
+                  </button>
+                </div>
+                <div class="menu__links_mobile"><a href="/">Home</a><a href="/features">Features</a><a href="/pricing">Pricing</a><a href="/faqs">Faqs</a><a href="/contact">Contact</a></div>
+                <div class="menu__contact_mobile">
+                    <a href="/"> 
+                        <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
+                    </svg> -->
+                    <span>Make diet plan</span></a>
+                    <a href="/image_analysis/">
+                        <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Meal Analyser</span></a>
+                    <a href="/analyze_report"> 
+                        <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
+                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
+                      <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg> -->
+                    <span>Medical Report</span></a></div>
+              </section>
+        </div>
+        </div>
+
+
+    <!-- Bootstrap and Tailwind JS (for form styling if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+</body>
+
+</html>
