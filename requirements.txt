@@ -1,6 +1,4 @@
 flask
-# openai
-# groq
 pandas
 google-generativeai
 python-dotenv
