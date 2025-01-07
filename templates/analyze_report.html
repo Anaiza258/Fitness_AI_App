@@ -18,18 +18,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-         body {
+        body {
             /* background-color: #c4c1c1; */
             /* background: rgb(233,233,233);
-       background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%);
-    */
+background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
 
-            background: rgb(240, 241, 246);
-            background: linear-gradient(0deg, rgba(240, 241, 246, 1) 0%, rgba(172, 165, 245, 1) 100%);
-            background-image: url("{{ url_for('static', filename='bg.png') }}");
-            background-size: cover;
+
+
+background: rgb(240,241,246);
+background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
+background-image: url({{ url_for('static', filename='bg.png') }});
+background-size: cover;
         }
-        
         @media screen and (max-width: 768px) {
             body {
                 background: rgb(240,241,246);
@@ -37,14 +37,19 @@
                 }
         }
         .chatbot-container {
+            /* border: 1px solid #ddd; */
             border-radius: 8px;
+            /* background-color: #f9f9f9; */
             width: 100%;
+            /* max-width: 600px; */
             max-width: 100%;
             margin: auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
+            /* height: 200px; */
             height: 90%;
+            /* Set a fixed height for the whole chatbot container */
         }
 
         #chat-window {
@@ -208,9 +213,143 @@
             background-color: #e5e7eb;
         }
 
+        /* Custom Checkbox */
+        .custom-checkbox {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 16px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-checkbox .checkmark {
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .custom-checkbox .checkmark::before {
+            content: "\2713";
+            font-size: 16px;
+            color: transparent;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark {
+            background-color: #333;
+            border-color: #333;
+            transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked+.checkmark::before {
+            color: #fff;
+        }
+
+        .custom-checkbox:hover {
+            color: #666;
+        }
+
+        .custom-checkbox:hover .checkmark {
+            border-color: #f1e4e4;
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .custom-checkbox input[type="checkbox"]:focus+.checkmark {
+            box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+            outline: none;
+        }
 
 
-        
+
+
+        /* updated: for hide the div*/
+        .diet_plan_space {
+            display: block;
+        }
+        .response {
+            display: none;
+        }
+        .response.show {
+            display: block;
+        }
+        .video-item {
+        position: relative;
+        overflow: hidden;
+        /* height: 0; */
+        }
+        .video-item iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* aspect-ratio: 16 / 9; */
+        }
+        .form-label{
+            color: #ddd;
+        }
+
+        .diet-resp-section{
+            background: rgb(7,75,168);
+            background: linear-gradient(36deg, rgb(223, 223, 223) 0%, rgb(156, 156, 156) 100%);
+            padding: 25px 20px 25px 20px;
+
+            /* margin-top: 100px; */
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .diet-resp-section .label-text{
+            color: #082d5e;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .image-section {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(49, 55, 82, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+            padding: 25px 20px 25px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* .offcanvas {
+            backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(213, 213, 213, 0.45);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+
+        }
+
+    @media screen and (max-width: 768px) {
+        .offcanvas {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(213, 213, 213, 0.45);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            }
+      } */
+
+
+
 
     .greenglass{
         background: rgba(104, 254, 171, 0.38);
@@ -621,70 +760,63 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
 
         // chatbot interaction
         document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector(".reportChatbot").style.display = 'none';
+            document.querySelector(".reportChatbot").style.display = 'none';
 
-    const sendButton = document.getElementById('send-button');
-    const chatQuery = document.getElementById('chat-query');
-    const chatMessages = document.getElementById('chat-messages');
+            const sendButton = document.getElementById('send-button');
+            const chatQuery = document.getElementById('chat-query');
+            const chatMessages = document.getElementById('chat-messages');
 
-    if (sendButton && chatQuery && chatMessages) {
-        // Function to send the message
-        const sendMessage = async () => {
-            const query = chatQuery.value.trim();
-            if (!query) return;
+            if (sendButton && chatQuery && chatMessages) {
+                sendButton.addEventListener('click', async () => {
+                    const query = chatQuery.value.trim();
+                    if (!query) return;
 
-            // Append user message
-            const userMessage = document.createElement('div');
-            userMessage.className = 'user-message';
-            userMessage.textContent = query;
-            chatMessages.appendChild(userMessage);
+                    // Append user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'user-message';
+                    userMessage.textContent = query;
+                    chatMessages.appendChild(userMessage);
 
-            // Clear input
-            chatQuery.value = '';
+                    // Clear input
+                    chatQuery.value = '';
 
-            // Send query to the server
-            try {
-                const response = await fetch('/medical-report-bot', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query })
+                    // Send query to the server
+                    try {
+                        const response = await fetch('/medical-report-bot', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ query })
+                        });
+                        const data = await response.json();
+
+                        // Check if the response contains an error or response text
+                        if (data.error) {
+                            // Append error message from the server
+                            const botMessage = document.createElement('div');
+                            botMessage.className = 'bot-message';
+                            botMessage.textContent = data.error;
+                            chatMessages.appendChild(botMessage);
+                        } else {
+                            // Append bot message
+                            const botMessage = document.createElement('div');
+                            botMessage.className = 'bot-message';
+                            botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
+                            chatMessages.appendChild(botMessage);
+                        }
+
+                        // Scroll to the latest message
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
                 });
-                const data = await response.json();
-
-                // Check if the response contains an error or response text
-                if (data.error) {
-                    // Append error message from the server
-                    const botMessage = document.createElement('div');
-                    botMessage.className = 'bot-message';
-                    botMessage.textContent = data.error;
-                    chatMessages.appendChild(botMessage);
-                } else {
-                    // Append bot message
-                    const botMessage = document.createElement('div');
-                    botMessage.className = 'bot-message';
-                    botMessage.textContent = data.response || 'I couldn’t understand. Try again!';
-                    chatMessages.appendChild(botMessage);
-                }
-
-                // Scroll to the latest message
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-
-        // Trigger message send on button click
-        sendButton.addEventListener('click', sendMessage);
-
-        // Trigger message send on pressing the Enter key
-        chatQuery.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();  // Prevent the default action (e.g., submitting a form)
-                sendMessage();  // Send the message
             }
         });
-    }
-});
+
+
+
+
+
 
 
 
@@ -800,6 +932,109 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
 
 
 
+
+
+        // Handle the Image Upload form submission with AJAX
+        //for dektop
+        // const imageForm = document.getElementById('image-upload-form');
+        // const imageForm2 = document.getElementById('image-upload-form2');
+        // let imagesection = document.getElementsByClassName("image-section");
+        // let imagesectiondesktop = document.getElementsByClassName("image-section-desktop");
+        
+        // if (imageForm) {
+        //     imageForm.addEventListener('submit', async (event) => {
+        //         event.preventDefault();  // Prevent default form submission
+        //         imagesectiondesktop[0].style.opacity = 0.5;
+                
+        //         const formData = new FormData(imageForm);
+
+        //         try {
+        //             const response = await fetch('/analyze-image', {
+        //                 method: 'POST',
+        //                 body: formData,
+        //             });
+
+        //             const data = await response.json();
+
+        //             if (data.result) {
+        //                 // Update the image result section with the new result
+        //                 imagesectiondesktop[0].style.opacity = 1;
+
+        //                 document.getElementById('image-result-section-desktop').innerHTML = `<p>${data.result}</p>`;
+        //                 document.getElementById('image-result-section-desktop2').innerHTML = `<p>${data.result}</p>`;
+        //                 offcanvas.show();
+        //                 document.getElementById('openOffcanvasBtnDesktop').style.display = 'block';
+        //                 // Ensure the chatbot container is visible
+        //                 const chatbotContainer = document.querySelector('.chatbot-container');
+        //                 if (chatbotContainer) {
+        //                     chatbotContainer.style.display = 'block';  // Make chatbot visible after result
+        //                 }
+        //             } else {
+        //                 document.getElementById('image-result-section-desktop').innerHTML = '<p>Error: No result found.</p>';
+        //             }
+        //         } catch (error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+        // if (imageForm2) {
+        //     imageForm2.addEventListener('submit', async (event) => {
+        //         event.preventDefault();  // Prevent default form submission
+        //         imagesection[0].style.opacity = 0.5;
+                
+        //         const formData2 = new FormData(imageForm2);
+
+        //         try {
+        //             const response2 = await fetch('/analyze-image', {
+        //                 method: 'POST',
+        //                 body: formData2,
+        //             });
+
+        //             const data2 = await response2.json();
+
+        //             if (data2.result) {
+        //                 // Update the image result section with the new result
+        //                 imagesection[0].style.opacity = 1;
+
+        //                 document.getElementById('image-result-section-camera').innerHTML = `<p>${data2.result}</p>`;
+        //                 document.getElementById('image-result-section-camera2').innerHTML = `<p>${data2.result}</p>`;
+        //                 offcanvasMobile.show();
+        //                 document.getElementById('openOffcanvasBtnMobile').style.display = 'block';
+        //                 // Ensure the chatbot container is visible
+        //                 const chatbotContainer = document.querySelector('.chatbot-container-mobile');
+        //                 if (chatbotContainer) {
+        //                     chatbotContainer.style.display = 'block';  // Make chatbot visible after result
+        //                 }
+        //             } else {
+        //                 document.getElementById('image-result-section-camera').innerHTML = '<p>Error: No result found.</p>';
+        //             }
+        //         } catch (error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+
+
+
+        // Mobile offcanvas: show or hide the image detail view
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const imageDetailCollapse = document.getElementById('imageDetailCollapse');
+        //     const openImageDetailsButton = document.getElementById('openImageDetailsButton');
+
+        //     function updateButtonVisibility() {
+        //         if (imageDetailCollapse.classList.contains('show')) {
+        //             openImageDetailsButton.classList.add('d-none');
+        //         } else {
+        //             openImageDetailsButton.classList.remove('d-none');
+        //         }
+        //     }
+
+        //     updateButtonVisibility();
+
+        //     imageDetailCollapse.addEventListener('hidden.bs.collapse', updateButtonVisibility);
+        //     imageDetailCollapse.addEventListener('shown.bs.collapse', updateButtonVisibility);
+        // });
+
         // Mobile : mobile quick menu bg
         function toggleStickyMenu() {
             const stickyMenu = document.getElementById('stickyMenuBg');
@@ -817,6 +1052,106 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
             stickyMenu.classList.remove('h-75');
             stickyMenu.classList.add('h-25');
         }
+
+
+
+
+        // Mobile: Main menu bottom navigation
+        // const buttonMobile = document.querySelector('.menu__button_mobile');
+        // const menuMobile = document.querySelector('.menu__body_mobile');
+        // const closeMobile = document.querySelector('.menu__header_mobile button');
+        // const overlayMobile = document.querySelector('.menu__overlay_mobile');
+
+        // function showMenuMobile () {
+        //     console.log('mobile clicked');
+        //     buttonMobile.setAttribute('hidden', '');
+        //     menuMobile.removeAttribute('hidden');
+        //     overlayMobile.removeAttribute('hidden');
+        // };
+
+        // function hideMenuMobile () {
+        //     menuMobile.setAttribute('hidden', '');
+        //     overlayMobile.setAttribute('hidden', '');
+        //     buttonMobile.removeAttribute('hidden');
+        // };
+
+        // buttonMobile.addEventListener('click', showMenuMobile);
+        // closeMobile.addEventListener('click', hideMenuMobile);
+        // overlayMobile.addEventListener('click', hideMenuMobile);
+
+
+// ofcanvas div for vedeos
+// Initialize the offcanvas component
+// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
+//         const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
+
+//         // Flag to track if offcanvas is already opened
+//         let isOffcanvasShown = false;
+
+//         // Scroll event listener
+//         window.addEventListener('scroll', function() {
+//             // Get the position of the trigger div
+//             const triggerDiv = document.getElementById('triggerDiv');
+//             const triggerPosition = triggerDiv.getBoundingClientRect().top;
+            
+//             // Check if user has scrolled past the trigger div
+//             if (triggerPosition <= window.innerHeight && !isOffcanvasShown) {
+//                 // Show offcanvas if not already shown
+//                 offcanvasVideo.show();
+//                 isOffcanvasShown = true;
+//             }
+//         });
+
+//         // Close event listener for offcanvas
+//         document.querySelector('.btn-close').addEventListener('click', function() {
+//             isOffcanvasShown = false;
+//         });
+
+
+
+////////////////////////// offcanvas video functon //////////////////////////////////////
+// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
+// const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
+
+// // Flag to track if offcanvas is already opened
+// let isOffcanvasShown = false;
+
+// // Function to check if the screen size is larger than mobile
+// function isMobileScreen() {
+//     return window.innerWidth < 992; // 992px is the breakpoint for 'md' in Bootstrap
+// }
+
+// // Scroll event listener
+// window.addEventListener('scroll', function() {
+//     // Get the position of the trigger div
+//     const triggerDiv = document.getElementById('triggerDiv');
+//     const triggerPosition = triggerDiv.getBoundingClientRect().top;
+    
+//     // Check if user has scrolled past the trigger div and screen is mobile
+//     if (triggerPosition <= window.innerHeight && !isOffcanvasShown && isMobileScreen()) {
+//         // Show offcanvas if not already shown
+//         offcanvasVideo.show();
+//         isOffcanvasShown = true;
+//     }
+// });
+
+// // Close event listener for offcanvas
+// offcanvasVideoEl.addEventListener('hidden.bs.offcanvas', function () {
+//     isOffcanvasShown = false;
+
+//     // Remove offcanvas lock on scroll when offcanvas is closed and it's a mobile screen
+//     if (!isMobileScreen()) {
+//         document.body.style.overflow = '';  // Reset overflow property when offcanvas is closed
+//     }
+// });
+
+// // Handle page resize to ensure scroll-lock only applies on mobile screens
+// window.addEventListener('resize', function() {
+//     if (!isMobileScreen() && isOffcanvasShown) {
+//         // Remove scroll-lock behavior on desktop if offcanvas is shown and the screen is resized
+//         document.body.style.overflow = '';  // Reset overflow property when resized to desktop
+//     }
+// });
 
 
 
