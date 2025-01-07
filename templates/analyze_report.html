@@ -19,17 +19,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
-            /* background-color: #c4c1c1; */
-            /* background: rgb(233,233,233);
-background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
-
-
-
-background: rgb(240,241,246);
-background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
-background-image: url({{ url_for('static', filename='bg.png') }});
-background-size: cover;
+            background: rgb(240, 241, 246);
+            background: linear-gradient(0deg, rgba(240, 241, 246, 1) 0%, rgba(172, 165, 245, 1) 100%);
+            background-image: url("{{ url_for('static', filename='bg.png') }}");
+            background-size: cover;
         }
+        
         @media screen and (max-width: 768px) {
             body {
                 background: rgb(240,241,246);
@@ -213,141 +208,6 @@ background-size: cover;
             background-color: #e5e7eb;
         }
 
-        /* Custom Checkbox */
-        .custom-checkbox {
-            display: inline-flex;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            font-size: 16px;
-            color: #333;
-            transition: color 0.3s;
-        }
-
-        .custom-checkbox input[type="checkbox"] {
-            display: none;
-        }
-
-        .custom-checkbox .checkmark {
-            width: 24px;
-            height: 24px;
-            border: 3px solid white;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-            transform-style: preserve-3d;
-        }
-
-        .custom-checkbox .checkmark::before {
-            content: "\2713";
-            font-size: 16px;
-            color: transparent;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .custom-checkbox input[type="checkbox"]:checked+.checkmark {
-            background-color: #333;
-            border-color: #333;
-            transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
-        }
-
-        .custom-checkbox input[type="checkbox"]:checked+.checkmark::before {
-            color: #fff;
-        }
-
-        .custom-checkbox:hover {
-            color: #666;
-        }
-
-        .custom-checkbox:hover .checkmark {
-            border-color: #f1e4e4;
-            background-color: #f0f0f0;
-            transform: scale(1.05);
-        }
-
-        .custom-checkbox input[type="checkbox"]:focus+.checkmark {
-            box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
-            outline: none;
-        }
-
-
-
-
-        /* updated: for hide the div*/
-        .diet_plan_space {
-            display: block;
-        }
-        .response {
-            display: none;
-        }
-        .response.show {
-            display: block;
-        }
-        .video-item {
-        position: relative;
-        overflow: hidden;
-        /* height: 0; */
-        }
-        .video-item iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* aspect-ratio: 16 / 9; */
-        }
-        .form-label{
-            color: #ddd;
-        }
-
-        .diet-resp-section{
-            background: rgb(7,75,168);
-            background: linear-gradient(36deg, rgb(223, 223, 223) 0%, rgb(156, 156, 156) 100%);
-            padding: 25px 20px 25px 20px;
-
-            /* margin-top: 100px; */
-            margin-top: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .diet-resp-section .label-text{
-            color: #082d5e;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .image-section {
-            backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(49, 55, 82, 0.75);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-
-            padding: 25px 20px 25px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* .offcanvas {
-            backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(213, 213, 213, 0.45);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-
-        }
-
-    @media screen and (max-width: 768px) {
-        .offcanvas {
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            background-color: rgba(213, 213, 213, 0.45);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.125);
-            }
-      } */
-
 
 
 
@@ -476,8 +336,6 @@ background-size: cover;
                         <div class="col-md-4-">
                             <form id="image-upload-form" method="POST" enctype="multipart/form-data">
                                 <div class=" row mb-3">
-                                    <!-- <label for="report-image-input" class="form-label">Upload an Image of Your Report</label> -->
-                                    <!-- <input type="file" class="form-control" name="report_image" id="report-image-input"> -->
                                     <h4 class="display-6 text-white fs-4 mb-2">Submit Your Report</h4>
                                     <div class="col-6 text-center">
                                         <button type="button" class="btn btn-primary- uploadfilebtn  form-control- mt-2 px-2">
@@ -671,24 +529,12 @@ background-size: cover;
                 <div class="menu__contact_mobile">
                     <a href="/"> 
                         <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
-                    </svg> -->
                     <span>Make diet plan</span></a>
                     <a href="/image_analysis/">
                         <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg> -->
                     <span>Meal Analyser</span></a>
                     <a href="/analyze_report"> 
                         <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg> -->
                     <span>Medical Report</span></a></div>
               </section>
         </div>
@@ -837,20 +683,7 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
                     fileInputCamera.disabled = false;
                     clearImagePreview();
                 }
-                // const file = fileInput.files[0];
-                // if (file) {
-                //     const reader = new FileReader();
-
-                //     reader.onload = (e) => {
-                //         previewImage.src = e.target.result;
-                //         previewContainer.style.display = 'block'; // Show the preview container
-                //     };
-
-                //     reader.readAsDataURL(file); // Read the file as a Data URL
-                // } else {
-                //     previewImage.src = '';
-                //     previewContainer.style.display = 'none'; // Hide the preview container if no file selected
-                // }
+                
             });
 
             fileInputCamera.addEventListener('change', () => {
@@ -862,20 +695,6 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
                     fileInput.disabled = false;
                     clearImagePreview();
                 }
-                // const fileCamera = fileInputCamera.files[0];
-                // if (fileCamera) {
-                //     const reader = new FileReader();
-
-                //     reader.onload = (e) => {
-                //         previewImage.src = e.target.result;
-                //         previewContainer.style.display = 'block'; // Show the preview container
-                //     };
-
-                //     reader.readAsDataURL(fileCamera); // Read the file as a Data URL
-                // } else {
-                //     previewImage.src = '';
-                //     previewContainer.style.display = 'none'; // Hide the preview container if no file selected
-                // }
             });
 
             function displayImagePreview(file) {
@@ -934,107 +753,6 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
 
 
 
-        // Handle the Image Upload form submission with AJAX
-        //for dektop
-        // const imageForm = document.getElementById('image-upload-form');
-        // const imageForm2 = document.getElementById('image-upload-form2');
-        // let imagesection = document.getElementsByClassName("image-section");
-        // let imagesectiondesktop = document.getElementsByClassName("image-section-desktop");
-        
-        // if (imageForm) {
-        //     imageForm.addEventListener('submit', async (event) => {
-        //         event.preventDefault();  // Prevent default form submission
-        //         imagesectiondesktop[0].style.opacity = 0.5;
-                
-        //         const formData = new FormData(imageForm);
-
-        //         try {
-        //             const response = await fetch('/analyze-image', {
-        //                 method: 'POST',
-        //                 body: formData,
-        //             });
-
-        //             const data = await response.json();
-
-        //             if (data.result) {
-        //                 // Update the image result section with the new result
-        //                 imagesectiondesktop[0].style.opacity = 1;
-
-        //                 document.getElementById('image-result-section-desktop').innerHTML = `<p>${data.result}</p>`;
-        //                 document.getElementById('image-result-section-desktop2').innerHTML = `<p>${data.result}</p>`;
-        //                 offcanvas.show();
-        //                 document.getElementById('openOffcanvasBtnDesktop').style.display = 'block';
-        //                 // Ensure the chatbot container is visible
-        //                 const chatbotContainer = document.querySelector('.chatbot-container');
-        //                 if (chatbotContainer) {
-        //                     chatbotContainer.style.display = 'block';  // Make chatbot visible after result
-        //                 }
-        //             } else {
-        //                 document.getElementById('image-result-section-desktop').innerHTML = '<p>Error: No result found.</p>';
-        //             }
-        //         } catch (error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-        // if (imageForm2) {
-        //     imageForm2.addEventListener('submit', async (event) => {
-        //         event.preventDefault();  // Prevent default form submission
-        //         imagesection[0].style.opacity = 0.5;
-                
-        //         const formData2 = new FormData(imageForm2);
-
-        //         try {
-        //             const response2 = await fetch('/analyze-image', {
-        //                 method: 'POST',
-        //                 body: formData2,
-        //             });
-
-        //             const data2 = await response2.json();
-
-        //             if (data2.result) {
-        //                 // Update the image result section with the new result
-        //                 imagesection[0].style.opacity = 1;
-
-        //                 document.getElementById('image-result-section-camera').innerHTML = `<p>${data2.result}</p>`;
-        //                 document.getElementById('image-result-section-camera2').innerHTML = `<p>${data2.result}</p>`;
-        //                 offcanvasMobile.show();
-        //                 document.getElementById('openOffcanvasBtnMobile').style.display = 'block';
-        //                 // Ensure the chatbot container is visible
-        //                 const chatbotContainer = document.querySelector('.chatbot-container-mobile');
-        //                 if (chatbotContainer) {
-        //                     chatbotContainer.style.display = 'block';  // Make chatbot visible after result
-        //                 }
-        //             } else {
-        //                 document.getElementById('image-result-section-camera').innerHTML = '<p>Error: No result found.</p>';
-        //             }
-        //         } catch (error) {
-        //             console.error('Error:', error);
-        //         }
-        //     });
-        // }
-
-
-
-        // Mobile offcanvas: show or hide the image detail view
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const imageDetailCollapse = document.getElementById('imageDetailCollapse');
-        //     const openImageDetailsButton = document.getElementById('openImageDetailsButton');
-
-        //     function updateButtonVisibility() {
-        //         if (imageDetailCollapse.classList.contains('show')) {
-        //             openImageDetailsButton.classList.add('d-none');
-        //         } else {
-        //             openImageDetailsButton.classList.remove('d-none');
-        //         }
-        //     }
-
-        //     updateButtonVisibility();
-
-        //     imageDetailCollapse.addEventListener('hidden.bs.collapse', updateButtonVisibility);
-        //     imageDetailCollapse.addEventListener('shown.bs.collapse', updateButtonVisibility);
-        // });
-
         // Mobile : mobile quick menu bg
         function toggleStickyMenu() {
             const stickyMenu = document.getElementById('stickyMenuBg');
@@ -1056,105 +774,8 @@ document.getElementById('image-upload-form').addEventListener('submit', async (e
 
 
 
-        // Mobile: Main menu bottom navigation
-        // const buttonMobile = document.querySelector('.menu__button_mobile');
-        // const menuMobile = document.querySelector('.menu__body_mobile');
-        // const closeMobile = document.querySelector('.menu__header_mobile button');
-        // const overlayMobile = document.querySelector('.menu__overlay_mobile');
 
-        // function showMenuMobile () {
-        //     console.log('mobile clicked');
-        //     buttonMobile.setAttribute('hidden', '');
-        //     menuMobile.removeAttribute('hidden');
-        //     overlayMobile.removeAttribute('hidden');
-        // };
-
-        // function hideMenuMobile () {
-        //     menuMobile.setAttribute('hidden', '');
-        //     overlayMobile.setAttribute('hidden', '');
-        //     buttonMobile.removeAttribute('hidden');
-        // };
-
-        // buttonMobile.addEventListener('click', showMenuMobile);
-        // closeMobile.addEventListener('click', hideMenuMobile);
-        // overlayMobile.addEventListener('click', hideMenuMobile);
-
-
-// ofcanvas div for vedeos
-// Initialize the offcanvas component
-// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
-//         const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
-
-//         // Flag to track if offcanvas is already opened
-//         let isOffcanvasShown = false;
-
-//         // Scroll event listener
-//         window.addEventListener('scroll', function() {
-//             // Get the position of the trigger div
-//             const triggerDiv = document.getElementById('triggerDiv');
-//             const triggerPosition = triggerDiv.getBoundingClientRect().top;
-            
-//             // Check if user has scrolled past the trigger div
-//             if (triggerPosition <= window.innerHeight && !isOffcanvasShown) {
-//                 // Show offcanvas if not already shown
-//                 offcanvasVideo.show();
-//                 isOffcanvasShown = true;
-//             }
-//         });
-
-//         // Close event listener for offcanvas
-//         document.querySelector('.btn-close').addEventListener('click', function() {
-//             isOffcanvasShown = false;
-//         });
-
-
-
-////////////////////////// offcanvas video functon //////////////////////////////////////
-// const offcanvasVideoEl = document.getElementById('offcanvas-videos');
-// const offcanvasVideo = new bootstrap.Offcanvas(offcanvasVideoEl);
-
-// // Flag to track if offcanvas is already opened
-// let isOffcanvasShown = false;
-
-// // Function to check if the screen size is larger than mobile
-// function isMobileScreen() {
-//     return window.innerWidth < 992; // 992px is the breakpoint for 'md' in Bootstrap
-// }
-
-// // Scroll event listener
-// window.addEventListener('scroll', function() {
-//     // Get the position of the trigger div
-//     const triggerDiv = document.getElementById('triggerDiv');
-//     const triggerPosition = triggerDiv.getBoundingClientRect().top;
-    
-//     // Check if user has scrolled past the trigger div and screen is mobile
-//     if (triggerPosition <= window.innerHeight && !isOffcanvasShown && isMobileScreen()) {
-//         // Show offcanvas if not already shown
-//         offcanvasVideo.show();
-//         isOffcanvasShown = true;
-//     }
-// });
-
-// // Close event listener for offcanvas
-// offcanvasVideoEl.addEventListener('hidden.bs.offcanvas', function () {
-//     isOffcanvasShown = false;
-
-//     // Remove offcanvas lock on scroll when offcanvas is closed and it's a mobile screen
-//     if (!isMobileScreen()) {
-//         document.body.style.overflow = '';  // Reset overflow property when offcanvas is closed
-//     }
-// });
-
-// // Handle page resize to ensure scroll-lock only applies on mobile screens
-// window.addEventListener('resize', function() {
-//     if (!isMobileScreen() && isOffcanvasShown) {
-//         // Remove scroll-lock behavior on desktop if offcanvas is shown and the screen is resized
-//         document.body.style.overflow = '';  // Reset overflow property when resized to desktop
-//     }
-// });
-
-
-
+// off canvas 
 const offcanvasCloseBtn = document.querySelector('#offcanvas-videos .btn-close');
 if (offcanvasCloseBtn) {
     offcanvasCloseBtn.addEventListener('click', function() {

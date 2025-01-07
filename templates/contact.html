@@ -19,17 +19,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
-        body {
-            /* background-color: #c4c1c1; */
-            /* background: rgb(233,233,233);
-background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
-
-
-
-background: rgb(240,241,246);
-background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
-background-image: url({{ url_for('static', filename='bg.png') }});
-background-size: cover;
+         body {
+            background: rgb(240, 241, 246);
+            background: linear-gradient(0deg, rgba(240, 241, 246, 1) 0%, rgba(172, 165, 245, 1) 100%);
+            background-image: url("{{ url_for('static', filename='bg.png') }}");
+            background-size: cover;
         }
 
 
@@ -302,24 +296,12 @@ background-size: cover;
                 <div class="menu__contact_mobile">
                     <a href="/"> 
                         <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
-                    </svg> -->
                     <span>Make diet plan</span></a>
                     <a href="/image_analysis/">
                         <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg> -->
                     <span>Meal Analyser</span></a>
                     <a href="/analyze_report"> 
                         <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                      <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
-                      <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg> -->
                     <span>Medical Report</span></a></div>
               </section>
         </div>

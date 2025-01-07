@@ -19,135 +19,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
-        body {
-            /* background-color: #c4c1c1; */
-            /* background: rgb(233,233,233);
-background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(120,120,120,1) 100%); */
-
-
-
-background: rgb(240,241,246);
-background: linear-gradient(0deg, rgba(240,241,246,1) 0%, rgba(172,165,245,1) 100%);
-background-image: url({{ url_for('static', filename='bg.png') }});
-background-size: cover;
-        }
-
-        
-
-
-        .text-card,
-        .form-card {
-            margin-top: 40px;
-            /* margin-top: 100px; */
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .text-card {
-            background-color: #ffffff;
-            padding: 318px 100px 192px 100px;
-            /*padding: 318px 100px 318px 100px;*/
-
-            background-image: url({{ url_for('static', filename='bg2.jpg') }});
+         body {
+            background: rgb(240, 241, 246);
+            background: linear-gradient(0deg, rgba(240, 241, 246, 1) 0%, rgba(172, 165, 245, 1) 100%);
+            background-image: url("{{ url_for('static', filename='bg.png') }}");
             background-size: cover;
-            background-position: center;
-        }
-
-        .form-card {
-            /* background-color: #28292b; */
-            background: rgb(7,75,168);
-background: linear-gradient(36deg, rgba(7,75,168,1) 0%, rgba(10,13,14,1) 100%);
-            padding: 25px 20px 25px 20px;
-        }
-
-        .label-text {
-            color: white;
-            font-weight: 700;
-            font-size: larger;
-        }
-
-        .input,
-        .textarea,
-        .toggle {
-            background-color: #e5e7eb;
-            color: #374151;
-        }
-
-        .btn-primary {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
-        #form-card {
-            background-color: #e5e7eb;
-        }
-
-
-        /* updated: for hide the div*/
-        .diet_plan_space {
-            display: block;
-        }
-        .response {
-            display: none;
-        }
-        .response.show {
-            display: block;
-        }
-        .video-item {
-        position: relative;
-        overflow: hidden;
-        /* height: 0; */
-        }
-        .video-item iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* aspect-ratio: 16 / 9; */
-        }
-        .form-label{
-            color: #ddd;
-        }
-
-        .diet-resp-section{
-            background: rgb(7,75,168);
-            background: linear-gradient(36deg, rgb(223, 223, 223) 0%, rgb(156, 156, 156) 100%);
-            padding: 25px 20px 25px 20px;
-
-            margin-top: 100px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .diet-resp-section .label-text{
-            color: #082d5e;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .image-section {
-            backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(49, 55, 82, 0.75);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-
-            padding: 25px 20px 25px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .offcanvas {
-            backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(213, 213, 213, 0.45);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-
         }
 
         /* for animated text */
@@ -474,24 +350,12 @@ background: linear-gradient(36deg, rgba(7,75,168,1) 0%, rgba(10,13,14,1) 100%);
                     <div class="menu__contact_mobile">
                         <a href="/"> 
                             <i class="fa fa-life-ring fa-2x" aria-hidden="true"></i>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0z" fill="none"></path>
-                          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
-                        </svg> -->
                         <span>Make diet plan</span></a>
                         <a href="/image_analysis/">
                             <i class="fa  fa-camera fa-2x" aria-hidden="true"></i>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
-                          <path d="M0 0h24v24H0z" fill="none"></path>
-                        </svg> -->
                         <span>Meal Analyser</span></a>
                         <a href="/analyze_report"> 
                             <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-                          <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
-                          <path d="M0 0h24v24H0z" fill="none"></path>
-                        </svg> -->
                         <span>Medical Report</span></a></div>
                   </section>
             </div>
@@ -500,7 +364,6 @@ background: linear-gradient(36deg, rgba(7,75,168,1) 0%, rgba(10,13,14,1) 100%);
     <!-- Bootstrap and Tailwind JS (for form styling if needed) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
 
 
 </body>
